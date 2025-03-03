@@ -1,13 +1,19 @@
 
+import { BrowserRouter, Routes } from 'react-router-dom'
 import './App.css'
-import { Button } from './components/ui/button'
+import Login from './pages/Login'
+import { Route } from 'react-router-dom'
 
 function App() {
 
   return (
-    <div className='flex justify-center p-[1vw]'>
-      <Button>click me</Button>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/logIn' element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
 
