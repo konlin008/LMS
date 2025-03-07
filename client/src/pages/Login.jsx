@@ -12,7 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLogInMutation, useRegisterMutation } from "@/features/apis/authApi";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Login() {
     const [logInInput, setLogInInput] = useState({
@@ -24,14 +25,22 @@ export default function Login() {
         email: "",
         password: "",
     });
-
     const [
         register,
-        { isLoading: registerIsLoading },
+        {
+            isLoading: registerIsLoading,
+            data: registerData,
+            error: registerError,
+            isSuccess: registerSuccess
+        },
     ] = useRegisterMutation();
     const [
         logIn,
-        { isLoading: logInIsLoading },
+        { isLoading: logInIsLoading,
+            data: loginData,
+            error: loginError,
+            isSuccess: loginSuccess
+        },
     ] = useLogInMutation();
 
     function onChangeHandler(e, type) {
@@ -48,6 +57,29 @@ export default function Login() {
         const action = type === "signup" ? register : logIn;
         await action(inputData);
     }
+    useEffect(() => {
+        if (registerSuccess && registerData) {
+            toast.success(registerData.msg || 'Signup Successfully')
+        }
+        if (registerError) {
+            toast.error(registerData.msg || 'Signup Faild')
+        }
+        if (loginSuccess && loginData) {
+            toast.success(loginData.msg || 'Login Successfully')
+        }
+        if (loginError) {
+            toast.error(loginData.msg || 'Signup Faild')
+        }
+    }, [
+        registerIsLoading,
+        registerData,
+        registerError,
+        logInIsLoading,
+        loginData,
+        loginError,
+        registerSuccess,
+        loginSuccess
+    ])
 
     return (
         <div className="flex items-center w-full justify-center">
