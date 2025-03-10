@@ -13,9 +13,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLogInMutation, useRegisterMutation } from "@/features/apis/authApi";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+
 export default function Login() {
+    const navigate = useNavigate()
     const [logInInput, setLogInInput] = useState({
         email: "",
         password: "",
@@ -66,7 +69,9 @@ export default function Login() {
         }
         if (loginSuccess && loginData) {
             toast.success(loginData.msg || 'Login Successfully')
+            navigate('/')
         }
+
         if (loginError) {
             toast.error(loginData.msg || 'Signup Faild')
         }
@@ -78,8 +83,10 @@ export default function Login() {
         loginData,
         loginError,
         registerSuccess,
-        loginSuccess
+        loginSuccess,
+
     ])
+
 
     return (
         <div className="flex items-center w-full justify-center mt-30">

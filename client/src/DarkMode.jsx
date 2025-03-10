@@ -11,6 +11,7 @@ import {
 
 
 const DarkMode = () => {
+    const setTheme = true
     return (
         <div>
             <DropdownMenu>
