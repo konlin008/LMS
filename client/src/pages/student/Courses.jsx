@@ -1,8 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
+import Course from "./Course";
 
 export const Courses = () => {
-    const isLoading = true;
+    const isLoading = false;
     return (
         <div className="bg-gray-50">
             <div className="max-w-7xl mx-auto p-6 ">
@@ -12,7 +13,7 @@ export const Courses = () => {
                         ? Array.from({ length: 8 }).map((_, index) => {
                             return <CourseSkeleton key={index} />;
                         })
-                        : ""}
+                        : <Course />}
                 </div>
             </div>
         </div>
