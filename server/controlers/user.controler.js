@@ -52,9 +52,44 @@ export const logIn = async (req, res) => {
     }
     generateToken(res, user, `welcome back ${user.name}`);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       msg: "Faild to Login",
+    });
+  }
+};
+export const logout = async (_, res) => {
+  try {
+    return res.status(200).cookie("token", "", { maxage: 0 }).json({
+      msg: "Logged out successfully ",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      msg: "Faild to Logout",
+    });
+  }
+};
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.id;
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        msg: "User Not Found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      msg: "Faild to Get User Information",
     });
   }
 };
