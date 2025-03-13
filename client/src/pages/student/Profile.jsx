@@ -15,35 +15,43 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Loader2 } from "lucide-react";
 import Course from "./Course";
+import { useLoadUserProfileQuery, useUpdateUserProfileMutation } from "@/features/apis/authApi";
 
 const Profile = () => {
-    const isLoading = false
-    const isLoadingCourses = false
-    const myCourses = [1, 2]
+    const { data, isLoading } = useLoadUserProfileQuery()
+    const [updateUserProfiler, { data: updatedData, isLoading: updatedDataIsLoading, error }] = useUpdateUserProfileMutation()
+
+    if (isLoading) { return (<h1>Profile is Loading</h1>) }
+
+    const user = data.user
+    function upadteUserHandler() {
+
+    }
+
     return (
-        <div className="max-w-7xl mx-auto my-24  px-4 md:px-0">
+        <div className=" max-w-7xl mx-auto my-24  px-4 md:px-0">
             <h1 className="font-bold text-2xl text-center md:text-left">MY PROFILE</h1>
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8 my-5">
                 <div className="flex flex-col items-center mb-4">
                     <Avatar className='h-24 w-24 md:h-32 md:w-32'>
-                        <AvatarImage src='https://github.com/shadcn.png' />
+                        <AvatarImage src={user.photoUrl || 'https://github.com/shadcn.png'} />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </div>
                 <div className="flex flex-col gap-4">
                     <div >
-                        <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-2xl">
-                            Name: <span className="text-xl text-gray-700 dark:text-gray-300 ml-2">Aman Mondal</span>
+                        <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-xl">
+                            Name: <span className="text-lg text-gray-700 dark:text-gray-300 ml-2">{user.name}</span>
                         </h2>
                     </div>
                     <div >
-                        <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-2xl">
-                            Email: <span className="text-xl text-gray-700 dark:text-gray-300 ml-2">aman@gmail.com</span>
+                        <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-xl">
+                            Email: <span className="text-lg text-gray-700 dark:text-gray-300 ml-2">{user.email}</span>
                         </h2>
                     </div>
                     <div >
-                        <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-2xl">
-                            Role: <span className="text-xl text-gray-700 dark:text-gray-300 ml-2">Instructor</span>
+                        <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-xl">
+                            Role: <span className="text-lg text-gray-700 dark:text-gray-300 ml-2">{user.role.toUpperCase()}</span>
                         </h2>
                     </div>
                     <div className="mt-2">
@@ -74,7 +82,7 @@ const Profile = () => {
 
                                 </div>
                                 <DialogFooter>
-                                    <Button disabled={isLoading}>
+                                    <Button disabled={isLoading} onClick={upadteUserHandler}>
                                         {isLoading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin " />Plaese Wait
@@ -89,21 +97,21 @@ const Profile = () => {
             </div>
             <div className="mt-10">
                 <h3 className="font-semibold text-2xl mb-4">Courses You're Enrolled in</h3>
-                {isLoadingCourses ? (
+                {isLoading ? (
                     <>
                         <MyLearningSkeleton />
                     </>
                 ) : (
                     <>
-                        {myCourses.length === 0 ? (<p>
+                        {user.enrolledCourses.length === 0 ? (<p>
                             You Are Not Enrolled In Any Courses
                         </p>) : (
                             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-                                {myCourses.map((course, index) => {
+                                {user.enrolledCourses.map((course) => {
                                     return (
-                                        <div key={index}>
-                                            <Course />
-                                        </div>
+
+                                        <Course course={course} key={course._id} />
+
                                     )
                                 })}
                             </div>
