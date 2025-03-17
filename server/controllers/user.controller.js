@@ -1,4 +1,5 @@
 import { User } from "../model/user.model.js";
+import { deleteMedia, uploadMedia } from "../utils/cloudinary.js";
 import { generateToken } from "../utils/generateToken.js";
 import bcrypt from "bcryptjs";
 
@@ -59,7 +60,7 @@ export const logIn = async (req, res) => {
 };
 export const logout = async (_, res) => {
   try {
-    return res.status(200).cookie("token", "", { maxage: 0 }).json({
+    return res.status(200).cookie("token", "", { maxAge: 0 }).json({
       msg: "Logged out successfully ",
       success: true,
     });
@@ -98,7 +99,7 @@ export const updateUserProdile = async (req, res) => {
     const userId = req.id;
     const { name } = req.body;
     const profilePhoto = req.file;
-    const user = await findById(userId);
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({
         msg: "User Not Found",
@@ -110,7 +111,7 @@ export const updateUserProdile = async (req, res) => {
       deleteMedia(publicId);
     }
     const cloudeResponse = await uploadMedia(profilePhoto.path);
-    const photoUrl = cloudeResponse;
+    const photoUrl = cloudeResponse.secure_url;
     const updatedData = { name, photoUrl };
     const updatedUserInfo = await User.findByIdAndUpdate(userId, updatedData, {
       new: true,

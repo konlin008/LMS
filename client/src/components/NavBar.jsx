@@ -19,14 +19,33 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Menu, School } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import DarkMode from "@/DarkMode";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogOutMutation } from "@/features/apis/authApi";
+import { toast } from "sonner";
+
 
 const NavBar = () => {
+  const navigate = useNavigate()
   const user = true;
+  const [logout, { data, isSuccess, error, isError }] = useLogOutMutation()
+
+  const logOutHandler = async () => {
+    await logout()
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.msg || 'Logout Successfully')
+      navigate('/login')
+    }
+    if (isError) {
+      console.log(error);
+    }
+  }, [data, isSuccess, isError])
   return (
     <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 p-2.5 ">
       <div
@@ -54,7 +73,7 @@ const NavBar = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem><Link to="myLearning">My Learning</Link></DropdownMenuItem>
                 <DropdownMenuItem><Link to="profile">Edit Profile</Link></DropdownMenuItem>
-                <DropdownMenuItem>Log out</DropdownMenuItem>
+                <DropdownMenuItem onClick={logOutHandler} >Log out</DropdownMenuItem>
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem><Link to="/">Dashboard</Link></DropdownMenuItem>
@@ -81,7 +100,21 @@ const NavBar = () => {
 export default NavBar;
 
 const MobileNavBar = () => {
+  const navigate = useNavigate()
+  const [logout, { data, isSuccess }] = useLogOutMutation()
+
+  const logOutHandler = async () => {
+    await logout()
+
+  }
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.msg || 'Logout Successfully')
+      navigate('/login')
+    }
+  }, [data, isSuccess])
   const role = "instructor";
+
   return (
     <>
       <Sheet>
@@ -101,9 +134,9 @@ const MobileNavBar = () => {
           </SheetHeader>
           <Separator className="mr-2" />
           <nav className="flex flex-col space-y-4">
-            <span>My Learning</span>
-            <span>Edit Profile</span>
-            <p>Logout</p>
+            <span><Link to="myLearning">My Learning</Link></span>
+            <span><Link to="profile">Edit Profile</Link></span>
+            <span onClick={logOutHandler}>Logout</span>
           </nav>
           {role === "instructor" && (
             <SheetFooter>

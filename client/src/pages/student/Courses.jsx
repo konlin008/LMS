@@ -14,7 +14,7 @@ export const Courses = () => {
                         ? Array.from({ length: 8 }).map((_, index) => {
                             return <CourseSkeleton key={index} />;
                         })
-                        : arr.map(() => <Course />)}
+                        : arr.map((index) => <Course key={index} />)}
                 </div>
             </div>
         </div>
