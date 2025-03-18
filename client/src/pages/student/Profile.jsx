@@ -60,12 +60,12 @@ const Profile = () => {
             toast.error(error.msg || 'Faild to Upload')
         }
 
-    }, [updatedData, error, isSuccess, isError])
+    }, [updatedData, error, isSuccess, isError, refetch])
 
     if (isLoading) {
         return <h1>Profile is Loading</h1>;
     }
-    const user = data.user;
+    const user = data && data.user;
 
 
 

@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDb from "./db.js";
 import userRouter from "./routes/user.route.js";
+import courseRouter from "./routes/course.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -19,6 +20,7 @@ app.use(
 );
 
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/course", courseRouter);
 
 app.listen(PORT, () => {
   console.log(`server listening on port ${PORT}`);

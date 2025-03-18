@@ -7,3 +7,14 @@ export const appStore = configureStore({
   middleware: (defaultMiddleWare) =>
     defaultMiddleWare().concat(authApi.middleware),
 });
+
+const initializeApp = async () => {
+  try {
+    await appStore.dispatch(
+      authApi.endpoints.loadUserProfile.initiate({}, { forceRefetch: true })
+    );
+  } catch (error) {
+    console.error("Failed to load user profile:", error);
+  }
+};
+initializeApp();

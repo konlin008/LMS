@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { userLoggedIn } from "../authSlice";
+import { userLoggedIn, userLoggedOut } from "../authSlice";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -35,12 +35,27 @@ export const authApi = createApi({
         url: "logout",
         method: "GET",
       }),
+      async onQueryStarted(args, {  dispatch }) {
+        try {
+          dispatch(userLoggedOut());
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
     loadUserProfile: builder.query({
       query: () => ({
         url: "profile",
         method: "GET",
       }),
+      async onQueryStarted(args, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(userLoggedIn({ user: result.data.user }));
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
     updateUserProfile: builder.mutation({
       query: (formData) => ({

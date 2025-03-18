@@ -20,32 +20,33 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Menu, School } from "lucide-react";
 import React, { useEffect } from "react";
-import { Button } from "./ui/button";
 import DarkMode from "@/DarkMode";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogOutMutation } from "@/features/apis/authApi";
 import { toast } from "sonner";
-
+import { useSelector } from "react-redux";
+import { Button } from "./ui/button";
 
 const NavBar = () => {
-  const navigate = useNavigate()
-  const user = true;
-  const [logout, { data, isSuccess, error, isError }] = useLogOutMutation()
+  const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
+  console.log(user);
+  const [logout, { data, isSuccess, error, isError }] = useLogOutMutation();
 
   const logOutHandler = async () => {
-    await logout()
-  }
+    await logout();
+  };
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(data.msg || 'Logout Successfully')
-      navigate('/login')
+      toast.success(data.msg || "Logout Successfully");
+      navigate("/login");
     }
     if (isError) {
       console.log(error);
     }
-  }, [data, isSuccess, isError])
+  }, [data, isSuccess, isError, navigate, error]);
   return (
     <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 p-2.5 ">
       <div
@@ -62,7 +63,7 @@ const NavBar = () => {
               <DropdownMenuTrigger>
                 <Avatar>
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={user?.photoUrl || "https://github.com/shadcn.png"}
                     alt="@shadcn"
                   />
                   <AvatarFallback>CN</AvatarFallback>
@@ -71,18 +72,30 @@ const NavBar = () => {
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem><Link to="myLearning">My Learning</Link></DropdownMenuItem>
-                <DropdownMenuItem><Link to="profile">Edit Profile</Link></DropdownMenuItem>
-                <DropdownMenuItem onClick={logOutHandler} >Log out</DropdownMenuItem>
-                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link to="myLearning">My Learning</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="profile">Edit Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={logOutHandler}>
+                  Log out
+                </DropdownMenuItem>
 
-                <DropdownMenuItem><Link to="/">Dashboard</Link></DropdownMenuItem>
+
+                {user.role === 'instructor' ? (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link to="/">Dashboard</Link>
+                    </DropdownMenuItem>
+                  </>) : ''}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-3">
-              <Button variant={"outline"}>Login</Button>
-              <Button>SignUp</Button>
+              <Button variant={"outline"} onClick={() => { navigate('/login') }}>Login</Button>
+              <Button onClick={() => { navigate('/login') }}>SignUp</Button>
             </div>
           )}
           <DarkMode />
@@ -91,7 +104,7 @@ const NavBar = () => {
       <div className="flex md:hidden items-center justify-between px-4 h-full">
         <h1 className=" font-extrabold text-xl">SKILLORA</h1>
 
-        <MobileNavBar />
+        <MobileNavBar user={user} />
       </div>
     </div>
   );
@@ -99,21 +112,20 @@ const NavBar = () => {
 
 export default NavBar;
 
-const MobileNavBar = () => {
-  const navigate = useNavigate()
-  const [logout, { data, isSuccess }] = useLogOutMutation()
+const MobileNavBar = ({ user }) => {
+  const navigate = useNavigate();
+  const [logout, { data, isSuccess, isError, error }] = useLogOutMutation();
 
   const logOutHandler = async () => {
-    await logout()
-
-  }
+    await logout();
+  };
   useEffect(() => {
     if (isSuccess) {
-      toast.success(data.msg || 'Logout Successfully')
-      navigate('/login')
+      toast.success(data.msg || "Logout Successfully");
+      navigate("/login");
     }
-  }, [data, isSuccess])
-  const role = "instructor";
+  }, [data, isSuccess, isError, navigate, error]);
+
 
   return (
     <>
@@ -134,17 +146,21 @@ const MobileNavBar = () => {
           </SheetHeader>
           <Separator className="mr-2" />
           <nav className="flex flex-col space-y-4">
-            <span><Link to="myLearning">My Learning</Link></span>
-            <span><Link to="profile">Edit Profile</Link></span>
+            <span>
+              <Link to="myLearning">My Learning</Link>
+            </span>
+            <span>
+              <Link to="profile">Edit Profile</Link>
+            </span>
             <span onClick={logOutHandler}>Logout</span>
           </nav>
-          {role === "instructor" && (
+          {user.role === "instructor" ? (
             <SheetFooter>
               <SheetClose asChild>
                 <Button type="submit">Dashboard</Button>
               </SheetClose>
             </SheetFooter>
-          )}
+          ) : ''}
         </SheetContent>
       </Sheet>
     </>

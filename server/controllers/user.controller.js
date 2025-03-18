@@ -51,7 +51,10 @@ export const logIn = async (req, res) => {
         msg: "Invalid Password",
       });
     }
-    generateToken(res, user, `welcome back ${user.name}`);
+    const userWithoutPassword = await User.findOne({ email }).select(
+      "-password"
+    );
+    generateToken(res, userWithoutPassword, `welcome back ${user.name}`);
   } catch (error) {
     return res.status(500).json({
       msg: "Faild to Login",

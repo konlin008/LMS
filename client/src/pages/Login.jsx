@@ -65,7 +65,7 @@ export default function Login() {
             toast.success(registerData.msg || 'Signup Successfully')
         }
         if (registerError) {
-            toast.error(registerData.msg || 'Signup Faild')
+            toast.error(registerError.msg || 'Signup Faild')
         }
         if (loginSuccess && loginData) {
             toast.success(loginData.msg || 'Login Successfully')
@@ -73,7 +73,7 @@ export default function Login() {
         }
 
         if (loginError) {
-            toast.error(loginData.msg || 'Signup Faild')
+            toast.error(loginError.msg || 'Signup Faild')
         }
     }, [
         registerIsLoading,
@@ -84,7 +84,7 @@ export default function Login() {
         loginError,
         registerSuccess,
         loginSuccess,
-
+        navigate
     ])
 
 
