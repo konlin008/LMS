@@ -2,8 +2,8 @@ import { Course } from "../model/course.model.js";
 
 export const createCousre = async (req, res) => {
   try {
-    const { courseTitle, catagory } = req.body;
-    if (!courseTitle || !catagory) {
+    const { courseTitle, category } = req.body;
+    if (!courseTitle || !category) {
       return res.status(400).json({
         success: false,
         msg: "All Fields Are Required",
@@ -11,7 +11,7 @@ export const createCousre = async (req, res) => {
     }
     const newCourse = await Course.create({
       courseTitle,
-      catagory,
+      category,
       creator: req.id,
     });
     return res.status(200).json({

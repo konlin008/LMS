@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
 import authApi from "@/features/apis/authApi";
+import { courseApi } from "@/features/apis/courseApi";
 
 export const appStore = configureStore({
   reducer: rootReducer,
   middleware: (defaultMiddleWare) =>
-    defaultMiddleWare().concat(authApi.middleware),
+    defaultMiddleWare().concat(authApi.middleware, courseApi.middleware),
 });
 
 const initializeApp = async () => {

@@ -31,7 +31,6 @@ import { Button } from "./ui/button";
 const NavBar = () => {
   const navigate = useNavigate();
   const { user } = useSelector((store) => store.auth);
-  console.log(user);
   const [logout, { data, isSuccess, error, isError }] = useLogOutMutation();
 
   const logOutHandler = async () => {
@@ -46,7 +45,7 @@ const NavBar = () => {
     if (isError) {
       console.log(error);
     }
-  }, [data, isSuccess, isError, navigate, error]);
+  }, [data, isSuccess, isError, error]);
   return (
     <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 p-2.5 ">
       <div
@@ -82,20 +81,35 @@ const NavBar = () => {
                   Log out
                 </DropdownMenuItem>
 
-
-                {user.role === 'instructor' ? (
+                {user.role === "instructor" ? (
                   <>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <Link to="/">Dashboard</Link>
                     </DropdownMenuItem>
-                  </>) : ''}
+                  </>
+                ) : (
+                  ""
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-3">
-              <Button variant={"outline"} onClick={() => { navigate('/login') }}>Login</Button>
-              <Button onClick={() => { navigate('/login') }}>SignUp</Button>
+              <Button
+                variant={"outline"}
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                Login
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                SignUp
+              </Button>
             </div>
           )}
           <DarkMode />
@@ -126,7 +140,6 @@ const MobileNavBar = ({ user }) => {
     }
   }, [data, isSuccess, isError, navigate, error]);
 
-
   return (
     <>
       <Sheet>
@@ -154,13 +167,16 @@ const MobileNavBar = ({ user }) => {
             </span>
             <span onClick={logOutHandler}>Logout</span>
           </nav>
-          {user.role === "instructor" ? (
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button type="submit">Dashboard</Button>
-              </SheetClose>
-            </SheetFooter>
+          {user?.role === 'insructor' ? (
+            <>
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button type="submit">Dashboard</Button>
+                </SheetClose>
+              </SheetFooter>
+            </>
           ) : ''}
+
         </SheetContent>
       </Sheet>
     </>
