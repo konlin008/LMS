@@ -26,3 +26,29 @@ export const createCousre = async (req, res) => {
     });
   }
 };
+export const getCreatorCourses = async (req, res) => {
+  try {
+    const userId = req.id;
+    const courses = await Course.find({
+      creator: userId,
+    });
+    console.log(courses);
+    if (!courses) {
+      return res.status(404).json({
+        courses: [],
+        msg: "Course not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      courses,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+    });
+  }
+};
