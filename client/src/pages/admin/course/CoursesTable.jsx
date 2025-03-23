@@ -52,17 +52,12 @@ const CoursesTable = () => {
               <TableCell className="font-medium">{course.courseTitle}</TableCell>
               <TableCell>{course.coursePrice || 'NA'}</TableCell>
               <TableCell><Badge>{course.isPublished ? "Published" : "Draft"}</Badge></TableCell>
-              <TableCell className="text-right"> <Button> <Edit /></Button></TableCell>
+              <TableCell className="text-right"> <Button size={'sm'} variant={'outline'} onClick={() => navigate(course._id )}> <Edit /></Button></TableCell>
 
             </TableRow>
           ))}
         </TableBody>
-        {/* <TableFooter>
-                    <TableRow>
-                        <TableCell colSpan={3}>Total</TableCell>
-                        <TableCell className="text-right">$2,500.00</TableCell>
-                    </TableRow>
-                </TableFooter> */}
+
       </Table>
     </div>
   );

@@ -19,7 +19,7 @@ import { useCreateCourseMutation } from "@/features/apis/courseApi";
 import { toast } from "sonner";
 
 const AddCourse = () => {
-    const [createCourse, { data, isLoading, isError, error, isSuccess }] = useCreateCourseMutation()
+    const [createCourse, { data, isLoading, isError, error, isSuccess, }] = useCreateCourseMutation()
     const [courseTitle, setCourseTitle] = useState('')
     const [category, setCategory] = useState('')
 
@@ -37,6 +37,7 @@ const AddCourse = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success(data?.msg || 'Course Created Successfully')
+            navigate('/admin/course')
         }
         if (isError) {
             console.log(error);

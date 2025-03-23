@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const courseApi = createApi({
   reducerPath: "courseApi",
+  tagTypes: ["Refetch_Creator_Course"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_COURSE_API,
     credentials: "include",
@@ -13,12 +14,14 @@ export const courseApi = createApi({
         method: "POST",
         body: CourseDetail,
       }),
+      invalidatesTags: ["Refetch_Creator_Course"],
     }),
     getCreatorCourse: builder.query({
       query: () => ({
-        url: "getCreatorCourses",
+        url: "getCreatorCourses", 
         method: "GET",
       }),
+      providesTags: ["Refetch_Creator_Course"],
     }),
   }),
 });
