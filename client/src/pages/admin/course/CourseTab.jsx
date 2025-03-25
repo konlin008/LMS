@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Select,
     SelectContent,
@@ -19,10 +19,14 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEditCourseMutation } from "@/features/apis/courseApi";
+import { toast } from "sonner";
 
 const CourseTab = () => {
     const navigate = useNavigate();
+    const { courseId } = useParams();
+    const [editCourse, { data, error, isLoading, isSuccess }] = useEditCourseMutation();
     const [input, setInput] = useState({
         courseTitle: "",
         courseSubTitle: "",
@@ -44,7 +48,7 @@ const CourseTab = () => {
         setInput({ ...input, courseLevel: value });
     };
     const changeFilelHandler = (e) => {
-        const file = e.target.file?.[0];
+        const file = e.target.files?.[0];
         if (file) {
             setInput({ ...input, courseThumbnail: file });
             const fileReader = new FileReader();
@@ -54,8 +58,32 @@ const CourseTab = () => {
             fileReader.readAsDataURL(file);
         }
     };
+    const updateCourse = async () => {
+        const { courseTitle, courseSubTitle, description, category, courseLevel, coursePrice, courseThumbnail } = input;
+        if (!courseTitle || !courseSubTitle || !description || !category || !courseLevel || !coursePrice || !courseThumbnail) {
+            toast.error("All fields are required!");
+            return;
+        }
+        const formData = new FormData();
+        formData.append('courseTitle', input.courseTitle)
+        formData.append('courseSubTitle', input.courseSubTitle)
+        formData.append('description', input.description)
+        formData.append('category', input.category)
+        formData.append('courseLevel', input.courseLevel)
+        formData.append('coursePrice', input.coursePrice)
+        formData.append('courseThumbnail', input.courseThumbnail)
+        editCourse({ formData, courseId })
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success(data.msg || 'Course Updated Success')
+        }
+        if (error) {
+            toast.error(error.msg || 'Course not Updated')
+        }
+    }, [data, error, isSuccess])
     const isPublished = true;
-    const isLoading = false;
 
     return (
         <Card>
@@ -108,7 +136,7 @@ const CourseTab = () => {
                     <div className="flex items-center gap-5">
                         <div>
                             <Label className="font-semibold text-md">Category</Label>
-                            <Select onChange={selectCategoryHandler}>
+                            <Select onValueChange={selectCategoryHandler}>
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Select a category" />
                                 </SelectTrigger>
@@ -135,7 +163,7 @@ const CourseTab = () => {
                         </div>
                         <div>
                             <Label className="font-semibold text-md">Course Level</Label>
-                            <Select onChange={selectLevelHandler}>
+                            <Select onValueChange={selectLevelHandler}>
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Select a category" />
                                 </SelectTrigger>
@@ -167,22 +195,22 @@ const CourseTab = () => {
                             onChange={changeFilelHandler}
                             accept={"image/*"}
                             className={"w-fit"}
-                            {
-                            ...previewThumbnail ? (
-                                <img src={previewThumbnail} />
-                            )
-                                : ''
-                            }
                         />
+                        {
+                            previewThumbnail && (
+                                <img src={previewThumbnail} className="h-50 2-60 my-2 rounded" alt={'Course Thumbnail'} />
+                            )
+
+                        }
                     </div>
                     <div className="space-x-2">
                         <Button
-                            onClick={() => navigate("/admin/course  ")}
+                            onClick={() => navigate("/admin/course")}
                             variant={"outline"}
                         >
                             Cancel
                         </Button>
-                        <Button disabled={isLoading}>
+                        <Button disabled={isLoading} onClick={updateCourse}>
                             {isLoading ? (
                                 <>
                                     <Loader2 className=" h-4 w-4 animate-spin" /> Please Wait

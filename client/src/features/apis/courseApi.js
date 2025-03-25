@@ -18,12 +18,24 @@ export const courseApi = createApi({
     }),
     getCreatorCourse: builder.query({
       query: () => ({
-        url: "getCreatorCourses", 
+        url: "getCreatorCourses",
         method: "GET",
       }),
       providesTags: ["Refetch_Creator_Course"],
     }),
+    editCourse: builder.mutation({
+      query: ({ courseId, formData }) => ({
+        url: `updateCourse/${courseId}`,
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: ["Refetch_Creator_Course"],
+    }),
   }),
 });
 
-export const { useCreateCourseMutation, useGetCreatorCourseQuery } = courseApi;
+export const {
+  useCreateCourseMutation,
+  useGetCreatorCourseQuery,
+  useEditCourseMutation,
+} = courseApi;
