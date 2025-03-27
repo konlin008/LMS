@@ -109,3 +109,30 @@ export const updateCourse = async (req, res) => {
     });
   }
 };
+export const getCourseById = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+    if (!courseId) {
+      res.status(404).json({
+        success: false,
+        msg: "error geting the Course Id",
+      });
+    }
+    const course = await findById(courseId);
+    if (!course) {
+      res.status(404).json({
+        msg: "No Course Found",
+      });
+    }
+    res.status(200).json({
+      success: false,
+      course,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+    });
+  }
+};

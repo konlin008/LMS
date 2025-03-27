@@ -3,6 +3,7 @@ import express from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import {
   createCousre,
+  getCourseById,
   getCreatorCourses,
   updateCourse,
 } from "../controllers/course.controller.js";
@@ -15,5 +16,6 @@ router.route("/getCreatorCourses").get(isAuthenticated, getCreatorCourses);
 router
   .route("/updateCourse/:courseId")
   .put(isAuthenticated, upload.single("courseThumbnail"), updateCourse);
+router.route("/getCourseById/:courseId").get(isAuthenticated, getCourseById);
 
 export default router;
