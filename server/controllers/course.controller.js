@@ -1,4 +1,5 @@
 import { Course } from "../model/course.model.js";
+import { Lecture } from "../model/lecture.model.js";
 import { deleteMedia, uploadMedia } from "../utils/cloudinary.js";
 
 export const createCousre = async (req, res) => {
@@ -133,6 +134,57 @@ export const getCourseById = async (req, res) => {
     res.status(500).json({
       success: false,
       msg: "Internal Server Error",
+    });
+  }
+};
+export const createLecture = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+    const { title, videoUrl } = req.body;
+
+    if (!courseId || !title || !videoUrl) {
+      return res.status(400).json({
+        success: false,
+        msg: "Title and Video URL are required",
+      });
+    }
+    const lecture = await Lecture.create({ title, videoUrl });
+    const course = await Course.findById(courseId);
+    if (course) {
+      course.lecture.push(lecture._id);
+      await course.save();
+      return res.status(201).json({
+        success: true,
+        msg: "Lecture created successfully",
+        lecture,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+    });
+  }
+};
+export const getCourseLectures = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+    const course = await Course.findById(courseId).populate("lecture");
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        msg: "Course not Found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      lectures: course.lecture,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Faild to get lectures",
     });
   }
 };
