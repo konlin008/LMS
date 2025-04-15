@@ -9,6 +9,7 @@ import {
   useGetCourseLectureQuery,
 } from "@/features/apis/courseApi";
 import { toast } from "sonner";
+import Lecture from "./Lecture";
 
 const CreateLecture = () => {
   const [lectureTitle, setLectureTitle] = useState();
@@ -19,10 +20,10 @@ const CreateLecture = () => {
     useCreateLectureMutation();
   const {
     data: lectureData,
-    Loading: lectureLoading,
+    isLoading: lectureLoading,
     isError: lectureErr,
+    refetch
   } = useGetCourseLectureQuery({ courseId });
-  console.log(lectureData);
   const createLecturehandler = async () => {
     try {
       await CreateLecture({
@@ -37,6 +38,7 @@ const CreateLecture = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.msg || `Course Created Successfully`);
+      refetch();
     }
     if (error) {
       toast.error(error.data.msg || `Error creating lecture`);
@@ -88,8 +90,13 @@ const CreateLecture = () => {
             <p>Lecture Loading</p>
           ) : lectureErr ? (
             <p>Faild to Load Lecture</p>
+          ) : lectureData.lectures.length === 0 ? (
+            <p>No Lecture Availabel</p>
           ) : (
-            <Lecture />
+            lectureData.lectures.map((lecture, index) => {
+              return (< Lecture key={lecture._id} lecture={lecture} courseId={courseId} index={index} />)
+            })
+
           )}
         </div>
       </div>
