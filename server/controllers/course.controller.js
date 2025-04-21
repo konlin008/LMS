@@ -188,3 +188,14 @@ export const getCourseLectures = async (req, res) => {
     });
   }
 };
+export const editLecture = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      sucess: false,
+      msg: "Faild to Update Lecture",
+    });
+  }
+};
