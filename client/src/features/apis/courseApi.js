@@ -45,12 +45,25 @@ export const courseApi = createApi({
         body: { title, videoUrl },
       }),
     }),
-      getCourseLecture: builder.query({
-        query: ({ courseId }) => ({
-          url: `getCourseLecture/${courseId}`,
-          method: "GET",
-        }),
+    getCourseLecture: builder.query({
+      query: ({ courseId }) => ({
+        url: `getCourseLecture/${courseId}`,
+        method: "GET",
       }),
+    }),
+    editLecture: builder.mutation({
+      query: ({
+        courseId,
+        lectureId,
+        lectureTitle,
+        videoInfo,
+        isPreviewFree,
+      }) => ({
+        url: `/editLecture/${courseId}/lectuer/${lectureId}`,
+        method: "POST",
+        body: { lectureTitle, videoInfo, isPreviewFree },
+      }),
+    }),
   }),
 });
 
@@ -61,4 +74,5 @@ export const {
   useGetCourseDetailsQuery,
   useCreateLectureMutation,
   useGetCourseLectureQuery,
+  useEditLectureMutation,
 } = courseApi;

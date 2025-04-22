@@ -65,7 +65,7 @@ function App() {
               element: <CreateLecture />
             },
             {
-              path: 'course/:courseId/lecture/:lectureid',
+              path: 'course/:courseId/lecture/:lectureId',
               element: <EditLecture />
             }
           ]
