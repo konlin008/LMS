@@ -14,6 +14,7 @@ const lectureSchema = new mongoose.Schema({
   },
   isPreviewFree: {
     type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,

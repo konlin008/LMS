@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const courseApi = createApi({
   reducerPath: "courseApi",
-  tagTypes: ["Refetch_Creator_Course"],
+  tagTypes: ["Refetch_Creator_Course", "Refetch_Lecture"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_COURSE_API,
     credentials: "include",
@@ -50,6 +50,7 @@ export const courseApi = createApi({
         url: `getCourseLecture/${courseId}`,
         method: "GET",
       }),
+      providesTags: ["Refetch_Lecture"],
     }),
     editLecture: builder.mutation({
       query: ({
@@ -64,6 +65,25 @@ export const courseApi = createApi({
         body: { lectureTitle, videoInfo, isPreviewFree },
       }),
     }),
+    removeLecture: builder.mutation({
+      query: ({ lectureId }) => ({
+        url: `/removeLecture/lectuer/${lectureId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Refetch_Lecture"],
+    }),
+    getLecture: builder.query({
+      query: ({ lectureId }) => ({
+        url: `/getLecture/lectuer/${lectureId}`,
+        method: "GET",
+      }),
+    }),
+    publishCourse: builder.mutation({
+      query: ({ courseID, query }) => ({
+        url: `/togglePublish/${courseID}?publish=${query}`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -75,4 +95,7 @@ export const {
   useCreateLectureMutation,
   useGetCourseLectureQuery,
   useEditLectureMutation,
+  useRemoveLectureMutation,
+  useGetLectureQuery,
+  usePublishCourseMutation,
 } = courseApi;

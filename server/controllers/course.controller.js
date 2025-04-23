@@ -119,7 +119,7 @@ export const getCourseById = async (req, res) => {
         msg: "error geting the Course Id",
       });
     }
-    const course = await findById(courseId);
+    const course = await Course.findById(courseId);
     if (!course) {
       res.status(404).json({
         msg: "No Course Found",
@@ -191,7 +191,6 @@ export const getCourseLectures = async (req, res) => {
 export const editLecture = async (req, res) => {
   try {
     const { lectureTitle, videoInfo, isPreviewFree } = req.body;
-    console.log({ lectureTitle, videoInfo, isPreviewFree });
     const { courseId, lectureId } = req.params;
     const lecture = await Lecture.findById(lectureId);
     if (!lecture) {
@@ -258,7 +257,7 @@ export const removeLecture = async (req, res) => {
 };
 export const getLectureById = async (req, res) => {
   try {
-    const lectureId = req.params;
+    const { lectureId } = req.params;
     const lecture = await Lecture.findById(lectureId);
     if (!lecture) {
       return res.status(404).json({
@@ -274,6 +273,34 @@ export const getLectureById = async (req, res) => {
     return res.status(500).json({
       success: false,
       msg: "Intrenal Server Error  ",
+    });
+  }
+};
+
+export const toggelPublishCourse = async () => {
+  try {
+    const { courseId } = req.params;
+    const { publish } = req.query;
+    const course = await Course.findById(courseId);
+    if (!courseId) {
+      return res.status(404).json({
+        msg: "Course Not Found",
+        success: false,
+      });
+    }
+    course.isPublished = publish === "true";
+    await course.save();
+
+    const statusMessage = course.isPublished ? "Published" : "Unpublished";
+    return res.status(200).json({
+      msg: `Course Is ${statusMessage}`,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Internal Server Error",
+      success: false,
     });
   }
 };

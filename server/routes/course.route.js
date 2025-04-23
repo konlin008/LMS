@@ -10,6 +10,7 @@ import {
   getCreatorCourses,
   getLectureById,
   removeLecture,
+  toggelPublishCourse,
   updateCourse,
 } from "../controllers/course.controller.js";
 import upload from "../utils/multer.js";
@@ -34,6 +35,10 @@ router
   .route("/removeLecture/lectuer/:lectureId")
   .delete(isAuthenticated, removeLecture);
 router
-  .route("/removeLecture/lectuer/:lectureId")
+  .route("/getLecture/lectuer/:lectureId")
   .get(isAuthenticated, getLectureById);
+
+router
+  .route("/togglePublish/:courseID")
+  .put(isAuthenticated, toggelPublishCourse);
 export default router;

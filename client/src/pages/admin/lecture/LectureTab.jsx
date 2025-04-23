@@ -10,26 +10,37 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { useEditLectureMutation } from "@/features/apis/courseApi";
+import { useEditLectureMutation, useGetLectureQuery, useRemoveLectureMutation } from "@/features/apis/courseApi";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const mediaUrl = import.meta.env.VITE_MEDIA_API;
 
 const LectureTab = () => {
-  // const [isEnabled, setIsEnabled] = useState(false);
   const [title, setTitle] = useState("");
   const [videoInfo, setVideoInfo] = useState(null);
   const [isFree, setIsFree] = useState(false);
   const [mediaProgress, setMediaProgress] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const params = useParams();
+  const { courseId, lectureId } = params;
+  const navigate = useNavigate()
 
   const [editLecture, { data, error, isLoading, isSuccess }] =
     useEditLectureMutation();
-  const params = useParams();
-  const { courseId, lectureId } = params;
+  const [removeLecture, { data: removeLectureData, error: removeLectureError, isLoading: removeLectureIsLoading, isSuccess: removeLectureIsSuccess }] = useRemoveLectureMutation()
+
+  const { data: lectureData, refetch } = useGetLectureQuery({ lectureId })
+  const lecture = lectureData?.lecture
+  useEffect(() => {
+    if (lecture) {
+      setTitle(lecture.title)
+      setIsFree(lecture.isPreviewFree)
+    }
+  }, [lecture])
 
   const fileChangeHandler = async (e) => {
     const file = e.target.files[0];
@@ -70,14 +81,27 @@ const LectureTab = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.msg || "Lecture Updated");
+      refetch();
     }
     if (error) {
       toast.error(error.msg || "Lecture Update Faild");
     }
-  }, [isSuccess, error, data]);
+  }, [isSuccess, error, data, refetch]);
   const handleToggle = (value) => {
     setIsFree(value);
   };
+  const removeLectureHandler = async () => {
+    removeLecture({ lectureId })
+  }
+  useEffect(() => {
+    if (removeLectureIsSuccess) {
+      toast.success(removeLectureData.msg || "Lecture Removed Succesfully");
+      navigate(`/admin/course/${courseId}/lecture`)
+    }
+    if (removeLectureError) {
+      toast.error(removeLectureError.msg || "Intrenal Server Error");
+    }
+  }, [removeLectureIsSuccess, removeLectureError, removeLectureData, courseId, navigate]);
   return (
     <Card>
       <CardHeader>
@@ -87,7 +111,18 @@ const LectureTab = () => {
             Make Changes And Click Save When Done
           </CardDescription>
           <div>
-            <Button className={"mt-2 bg-red-500"}>Remove Lecture</Button>
+            <Button
+              onClick={removeLectureHandler}
+              disabled={removeLectureIsLoading || mediaProgress || isLoading}
+              className={"mt-2 bg-red-500"}>
+              {
+                removeLectureIsLoading ?
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Please Wait
+                  </>
+                  : 'Remove Lecture'
+              }
+            </Button>
           </div>
         </div>
       </CardHeader>
@@ -98,6 +133,7 @@ const LectureTab = () => {
             <Input
               type={"text"}
               placeholder={"Ex. Introduction to Java Script"}
+              value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
@@ -115,7 +151,7 @@ const LectureTab = () => {
             />
           </div>
           <div className="my-5">
-            <Switch onChange={handleToggle} />
+            <Switch checked={isFree} onChange={handleToggle} />
             <span className="mt-2 ml-2">Is This video Free?</span>
           </div>
           {mediaProgress && (
@@ -125,7 +161,13 @@ const LectureTab = () => {
             </div>
           )}
           <div>
-            <Button onClick={editLectureHandler}>Update Lecture</Button>
+            <Button onClick={editLectureHandler} disabled={isLoading || mediaProgress || removeLectureIsLoading}>
+              {
+                isLoading ? (<>
+                  <Loader2 className="h-4 w-4 animate-spin " />Please Wait
+                </>) : 'Update Lecture'
+              }
+            </Button>
           </div>
         </div>
       </CardContent>

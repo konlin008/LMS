@@ -20,13 +20,14 @@ import {
 } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEditCourseMutation } from "@/features/apis/courseApi";
+import { useEditCourseMutation, useGetCourseDetailsQuery } from "@/features/apis/courseApi";
 import { toast } from "sonner";
 
 const CourseTab = () => {
     const navigate = useNavigate();
     const { courseId } = useParams();
     const [editCourse, { data, error, isLoading, isSuccess }] = useEditCourseMutation();
+
     const [input, setInput] = useState({
         courseTitle: "",
         courseSubTitle: "",
@@ -37,6 +38,18 @@ const CourseTab = () => {
         courseThumbnail: "",
     });
     const [previewThumbnail, SetPreviewThubmnail] = useState("");
+    const { data: courseData } = useGetCourseDetailsQuery(courseId)
+    const course = courseData?.course
+    useEffect(() => {
+        if (course) {
+            setInput({ ...input, courseTitle: course.courseTitle })
+            setInput({ ...input, courseSubTitle: course.courseSubTitle })
+            setInput({ ...input, description: course.description })
+            setInput({ ...input, category: course.category })
+            setInput({ ...input, courseLevel: course.courseLevel })
+        }
+    }, [course])
+    course ? console.log(course) : ''
     const changeEventHandeler = (e) => {
         const { name, value } = e.target;
         setInput({ ...input, [name]: value });
@@ -95,7 +108,7 @@ const CourseTab = () => {
                     </CardDescription>
                 </div>
                 <div className="space-x-3">
-                    <Button variant={"outline"}>
+                    <Button variant={"outline"} >
                         {isPublished ? "Unpublished" : "Published"}
                     </Button>
                     <Button>Remove Course</Button>

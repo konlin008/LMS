@@ -43,7 +43,7 @@ const CreateLecture = () => {
     if (error) {
       toast.error(error.data.msg || `Error creating lecture`);
     }
-  }, [isSuccess, data, error]);
+  }, [isSuccess, data, error, refetch]);
   return (
     <div className="flex-1 mx-10">
       <div className="mb-4">
@@ -77,7 +77,7 @@ const CreateLecture = () => {
           <Button disabled={isLoading} onClick={createLecturehandler}>
             {isLoading ? (
               <>
-                <Loader2 className="mr- h-4 w-4 animate-spin " />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin " />
                 Please Wait
               </>
             ) : (
