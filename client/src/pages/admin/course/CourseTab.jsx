@@ -42,13 +42,17 @@ const CourseTab = () => {
     const course = courseData?.course
     useEffect(() => {
         if (course) {
-            setInput({ ...input, courseTitle: course.courseTitle })
-            setInput({ ...input, courseSubTitle: course.courseSubTitle })
-            setInput({ ...input, description: course.description })
-            setInput({ ...input, category: course.category })
-            setInput({ ...input, courseLevel: course.courseLevel })
+            setInput({
+                courseTitle: course.courseTitle || "",
+                courseSubTitle: course.courseSubTitle || "",
+                description: course.description || "",
+                category: course.category || "",
+                courseLevel: course.courseLevel || "",
+                coursePrice: course.coursePrice || "",
+                courseThumbnail: "",
+            });
         }
-    }, [course])
+    }, [course, setInput])
     course ? console.log(course) : ''
     const changeEventHandeler = (e) => {
         const { name, value } = e.target;
@@ -149,7 +153,7 @@ const CourseTab = () => {
                     <div className="flex items-center gap-5">
                         <div>
                             <Label className="font-semibold text-md">Category</Label>
-                            <Select onValueChange={selectCategoryHandler}>
+                            <Select value={input.category} onValueChange={selectCategoryHandler}>
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Select a category" />
                                 </SelectTrigger>
@@ -176,7 +180,7 @@ const CourseTab = () => {
                         </div>
                         <div>
                             <Label className="font-semibold text-md">Course Level</Label>
-                            <Select onValueChange={selectLevelHandler}>
+                            <Select value={input.courseLevel} onValueChange={selectLevelHandler}>
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Select a category" />
                                 </SelectTrigger>
