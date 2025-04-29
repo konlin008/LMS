@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEditCourseMutation, useGetCourseDetailsQuery } from "@/features/apis/courseApi";
+import { useEditCourseMutation, useGetCourseDetailsQuery, usePublishCourseMutation } from "@/features/apis/courseApi";
 import { toast } from "sonner";
 
 const CourseTab = () => {
@@ -38,8 +38,10 @@ const CourseTab = () => {
         courseThumbnail: "",
     });
     const [previewThumbnail, SetPreviewThubmnail] = useState("");
-    const { data: courseData } = useGetCourseDetailsQuery(courseId)
+    const { data: courseData, refetch } = useGetCourseDetailsQuery(courseId)
     const course = courseData?.course
+
+    const [publishCourse] = usePublishCourseMutation()
     useEffect(() => {
         if (course) {
             setInput({
@@ -53,7 +55,6 @@ const CourseTab = () => {
             });
         }
     }, [course, setInput])
-    course ? console.log(course) : ''
     const changeEventHandeler = (e) => {
         const { name, value } = e.target;
         setInput({ ...input, [name]: value });
@@ -91,6 +92,23 @@ const CourseTab = () => {
         formData.append('courseThumbnail', input.courseThumbnail)
         editCourse({ formData, courseId })
     }
+    const publishStatusHandler = async (action) => {
+        if (course.lecture.length === 0) {
+            toast.error("Add a Lecture First")
+            return
+        }
+        try {
+
+            const response = await publishCourse({ courseId: courseId, query: action })
+            if (response.data) {
+                refetch()
+                toast.success(response.data.msg)
+            }
+        } catch (error) {
+            toast.error('Faild to Publish or Unpublish')
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         if (isSuccess) {
@@ -100,7 +118,7 @@ const CourseTab = () => {
             toast.error(error.msg || 'Course not Updated')
         }
     }, [data, error, isSuccess])
-    const isPublished = true;
+
 
     return (
         <Card>
@@ -112,8 +130,9 @@ const CourseTab = () => {
                     </CardDescription>
                 </div>
                 <div className="space-x-3">
-                    <Button variant={"outline"} >
-                        {isPublished ? "Unpublished" : "Published"}
+                    <Button
+                        variant={"outline"} onClick={() => publishStatusHandler(course?.isPublished ? 'false' : 'true')} >
+                        {course?.isPublished ? "Unpublish" : "Publish"}
                     </Button>
                     <Button>Remove Course</Button>
                 </div>

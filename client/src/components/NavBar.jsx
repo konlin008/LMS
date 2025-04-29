@@ -54,7 +54,9 @@ const NavBar = () => {
       >
         <div className="flex items-center gap-5">
           <School size={30} />
-          <h1 className=" hidden md:block font-extrabold text-2xl">SKILLORA</h1>
+          <Link to={'/'}>
+            <h1 className=" hidden md:block font-extrabold text-2xl">SKILLORA</h1>
+          </Link>
         </div>
         <div className="flex gap-4">
           {user ? (
@@ -85,7 +87,7 @@ const NavBar = () => {
                   <>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Link to="/">Dashboard</Link>
+                      <Link to="/admin">Dashboard</Link>
                     </DropdownMenuItem>
                   </>
                 ) : (
@@ -167,11 +169,11 @@ const MobileNavBar = ({ user }) => {
             </span>
             <span onClick={logOutHandler}>Logout</span>
           </nav>
-          {user?.role === 'insructor' ? (
+          {user.role === "instructor" ? (
             <>
               <SheetFooter>
                 <SheetClose asChild>
-                  <Button type="submit">Dashboard</Button>
+                  <Button onClick ={()=>navigate("/admin")}>Dashboard</Button>
                 </SheetClose>
               </SheetFooter>
             </>

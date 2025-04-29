@@ -16,12 +16,19 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ["Refetch_Creator_Course"],
     }),
+
     getCreatorCourse: builder.query({
       query: () => ({
         url: "getCreatorCourses",
         method: "GET",
       }),
       providesTags: ["Refetch_Creator_Course"],
+    }),
+    getPublishedCourses: builder.query({
+      query: () => ({
+        url: "publishedCourse",
+        method: "GET",
+      }),
     }),
     editCourse: builder.mutation({
       query: ({ courseId, formData }) => ({
@@ -79,8 +86,8 @@ export const courseApi = createApi({
       }),
     }),
     publishCourse: builder.mutation({
-      query: ({ courseID, query }) => ({
-        url: `/togglePublish/${courseID}?publish=${query}`,
+      query: ({ courseId, query }) => ({
+        url: `/togglePublish/${courseId}?publish=${query}`,
         method: "PUT",
       }),
     }),
@@ -90,6 +97,7 @@ export const courseApi = createApi({
 export const {
   useCreateCourseMutation,
   useGetCreatorCourseQuery,
+  useGetPublishedCoursesQuery,
   useEditCourseMutation,
   useGetCourseDetailsQuery,
   useCreateLectureMutation,

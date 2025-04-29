@@ -9,6 +9,7 @@ import {
   getCourseLectures,
   getCreatorCourses,
   getLectureById,
+  getPublishedCourse,
   removeLecture,
   toggelPublishCourse,
   updateCourse,
@@ -19,6 +20,7 @@ const router = express.Router();
 
 router.route("/createCourse").post(isAuthenticated, createCousre);
 router.route("/getCreatorCourses").get(isAuthenticated, getCreatorCourses);
+router.route("/publishedCourse").get(isAuthenticated, getPublishedCourse);
 router
   .route("/updateCourse/:courseId")
   .put(isAuthenticated, upload.single("courseThumbnail"), updateCourse);
@@ -39,6 +41,6 @@ router
   .get(isAuthenticated, getLectureById);
 
 router
-  .route("/togglePublish/:courseID")
+  .route("/togglePublish/:courseId")
   .put(isAuthenticated, toggelPublishCourse);
 export default router;
