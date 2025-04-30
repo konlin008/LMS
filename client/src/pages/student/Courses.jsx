@@ -1,10 +1,17 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 import Course from "./Course";
+import { useGetPublishedCoursesQuery } from "@/features/apis/courseApi";
 
 export const Courses = () => {
-    const arr = [1, 2, 3, 4, 5, 6, 7]
-    const isLoading = false;
+    const { data, isLoading, error } = useGetPublishedCoursesQuery()
+    if (error) {
+        return (
+            <h1>Error Occurred While Fetching Course</h1>
+        )
+    }
+    const courses = data?.courses
+
     return (
         <div className="bg-gray-50">
             <div className="max-w-7xl mx-auto p-6 ">
@@ -14,7 +21,7 @@ export const Courses = () => {
                         ? Array.from({ length: 8 }).map((_, index) => {
                             return <CourseSkeleton key={index} />;
                         })
-                        : arr.map((index) => <Course key={index} />)}
+                        : courses.map((course, index) => <Course key={index} course={course} />)}
                 </div>
             </div>
         </div>
