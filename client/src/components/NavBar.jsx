@@ -27,7 +27,6 @@ import { useLogOutMutation } from "@/features/apis/authApi";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { Button } from "./ui/button";
-import { usePublishCourseMutation } from "@/features/apis/courseApi";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -170,7 +169,7 @@ const MobileNavBar = ({ user }) => {
             </span>
             <span onClick={logOutHandler}>Logout</span>
           </nav>
-          {user.role === "instructor" ? (
+          {user?.role === "instructor" ? (
             <>
               <SheetFooter>
                 <SheetClose asChild>

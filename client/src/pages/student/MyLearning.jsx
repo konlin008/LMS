@@ -3,7 +3,7 @@ import Course from './Course'
 
 const MyLearning = () => {
     const isLoading = false
-    const myCourses = [1, 2, 3, 4, 6, 4]
+    const myCourses = []
     return (
         <div className='max-w-7xl mx-auto my-24 px-4 md:px-0 '>
             <h1 className='font-bold text-2xl'> MY LEARNING</h1>

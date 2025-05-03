@@ -78,7 +78,7 @@ const Profile = () => {
                 <div className="flex flex-col items-center mb-4">
                     <Avatar className="h-24 w-24 md:h-32 md:w-32">
                         <AvatarImage
-                            src={user.photoUrl || "https://github.com/shadcn.png"}
+                            src={user?.photoUrl || "https://github.com/shadcn.png"}
                         />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
