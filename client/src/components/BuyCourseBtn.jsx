@@ -1,9 +1,18 @@
 import React from 'react'
 import { Button } from './ui/button'
+import { useCreateCheckMutation } from '@/features/apis/purchaseApi'
 
-const BuyCourseBtn = () => {
+const BuyCourseBtn = (courseId) => {
+    const [CreateCheck, { isLoading }] = useCreateCheckMutation()
+    const purchaseCourseHandler = async () => {
+        await CreateCheck({ courseId })
+    }
     return (
-        <Button className={'w-full'}>Buy Course</Button>
+
+        <Button onClick={purchaseCourseHandler} className={'w-full'}>
+            {isLoading ? '' : ''}
+            Buy Course
+        </Button>
     )
 }
 

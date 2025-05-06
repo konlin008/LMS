@@ -4,6 +4,7 @@ import connectDb from "./db.js";
 import mediaRouter from "./routes/media.route.js";
 import userRouter from "./routes/user.route.js";
 import courseRouter from "./routes/course.route.js";
+import purchaseRouter from "./routes/purchaseCourse.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -23,6 +24,7 @@ app.use(
 app.use("/api/v1/media", mediaRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/course", courseRouter);
+app.use("/api/v1/purchase", purchaseRouter);
 
 app.listen(PORT, () => {
   console.log(`server listening on port ${PORT}`);

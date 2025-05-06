@@ -1,8 +1,10 @@
-import Stripe from "Stripe";
+import Stripe from "stripe";
 import { Course } from "../model/course.model.js";
 import { PurchaseCourse } from "../model/purchaseCourse.model.js";
+import { User } from "../model/user.model.js";
+import { Lecture } from "../model/lecture.model.js"; // Added import for Lecture model
 
-const stripe = new Stripe(process.env.STRIP_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const chackOutSession = async (req, res) => {
   try {
@@ -22,6 +24,7 @@ export const chackOutSession = async (req, res) => {
       amount: course.coursePrice,
       status: "pending",
     });
+
     // Create a Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -33,20 +36,20 @@ export const chackOutSession = async (req, res) => {
               name: course.courseTitle,
               images: [course.courseThumbnail],
             },
-            unit_amount: course.coursePrice * 100, // Amount in paise (lowest denomination)
+            unit_amount: course.coursePrice * 100,
           },
           quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: `http://localhost:5173/course-progress/${courseId}`, // once payment successful redirect to course progress page
-      cancel_url: `http://localhost:5173/course-detail/${courseId}`,
+      success_url: `${process.env.FRONTEND_URL}/course-progress/${courseId}`,
+      cancel_url: `${process.env.FRONTEND_URL}/course-details/${courseId}`,
       metadata: {
         courseId: courseId,
         userId: userId,
       },
       shipping_address_collection: {
-        allowed_countries: ["IN"], // Optionally restrict allowed countries
+        allowed_countries: ["IN"],
       },
     });
 
@@ -55,12 +58,13 @@ export const chackOutSession = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Error while creating session" });
     }
+
     newPurchase.paymentId = session.id;
     await newPurchase.save();
 
     return res.status(200).json({
       success: true,
-      url: session.url, // Return the Stripe checkout URL
+      url: session.url,
     });
   } catch (error) {
     console.log(error);
@@ -69,4 +73,63 @@ export const chackOutSession = async (req, res) => {
       success: false,
     });
   }
+};
+
+export const stripeWebhook = async (req, res) => {
+  let event;
+
+  try {
+    const sig = req.headers["stripe-signature"];
+    const secret = process.env.WEBHOOK_ENDPOINT_SECRET; // Added missing secret
+    event = stripe.webhooks.constructEvent(req.body, sig, secret);
+  } catch (error) {
+    console.error("Webhook error:", error.message);
+    return res.status(400).send(`Webhook error: ${error.message}`);
+  }
+
+  if (event.type === "checkout.session.completed") {
+    console.log("checkout session completed is called");
+
+    try {
+      const session = event.data.object;
+
+      const purchase = await PurchaseCourse.findOne({
+        paymentId: session.id,
+      }).populate({ path: "courseId" });
+
+      if (!purchase) {
+        return res.status(404).json({ message: "Purchase not found" });
+      }
+
+      if (session.amount_total) {
+        purchase.amount = session.amount_total / 100;
+      }
+      purchase.status = "completed";
+
+      if (purchase.courseId && purchase.courseId.lectures.length > 0) {
+        await Lecture.updateMany(
+          { _id: { $in: purchase.courseId.lectures } },
+          { $set: { isPreviewFree: true } }
+        );
+      }
+
+      await purchase.save();
+
+      await User.findByIdAndUpdate(
+        purchase.userId,
+        { $addToSet: { enrolledCourses: purchase.courseId._id } },
+        { new: true }
+      );
+
+      await Course.findByIdAndUpdate(
+        purchase.courseId._id,
+        { $addToSet: { enrolledStudents: purchase.userId } },
+        { new: true }
+      );
+    } catch (error) {
+      console.error("Error handling event:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+  res.status(200).send();
 };
