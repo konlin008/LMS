@@ -7,11 +7,19 @@ import courseRouter from "./routes/course.route.js";
 import purchaseRouter from "./routes/purchaseCourse.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { stripeWebhook } from "./controllers/purchaseCourse.controller.js"; // 👈 import directly
 
 const PORT = 8080;
 dotenv.config({});
 connectDb();
 const app = express();
+
+app.post(
+  "/api/v1/purchase/webhook",
+  express.raw({ type: "application/json" }),
+  stripeWebhook
+);
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(

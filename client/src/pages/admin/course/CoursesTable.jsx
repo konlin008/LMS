@@ -24,7 +24,7 @@ const CoursesTable = () => {
   if (isLoading) {
     return <h1>Loading...</h1>
   };
-  const creatorCourses = data.courses
+  const creatorCourses = data?.courses
 
 
   return (
@@ -48,11 +48,11 @@ const CoursesTable = () => {
         </TableHeader>
         <TableBody>
           {creatorCourses.map((course) => (
-            <TableRow key={course._id}>
-              <TableCell className="font-medium">{course.courseTitle}</TableCell>
-              <TableCell>{course.coursePrice || 'NA'}</TableCell>
-              <TableCell><Badge>{course.isPublished ? "Published" : "Draft"}</Badge></TableCell>
-              <TableCell className="text-right"> <Button size={'sm'} variant={'outline'} onClick={() => navigate(course._id )}> <Edit /></Button></TableCell>
+            <TableRow key={course?._id}>
+              <TableCell className="font-medium">{course?.courseTitle}</TableCell>
+              <TableCell>{course?.coursePrice || 'NA'}</TableCell>
+              <TableCell><Badge>{course?.isPublished ? "Published" : "Draft"}</Badge></TableCell>
+              <TableCell className="text-right"> <Button size={'sm'} variant={'outline'} onClick={() => navigate(course?._id)}> <Edit /></Button></TableCell>
 
             </TableRow>
           ))}

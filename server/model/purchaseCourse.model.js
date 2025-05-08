@@ -18,7 +18,6 @@ const purchaseCoursesSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["prnding", "completed", "failed"],
       default: "pending",
     },
     paymentId: {

@@ -1,6 +1,9 @@
 import express, { application } from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
-import { stripeWebhook } from "../controllers/purchaseCourse.controller";
+import {
+  chackOutSession,
+  stripeWebhook,
+} from "../controllers/purchaseCourse.controller.js";
 const router = express.Router();
 
 router
