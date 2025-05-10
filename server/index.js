@@ -7,10 +7,9 @@ import courseRouter from "./routes/course.route.js";
 import purchaseRouter from "./routes/purchaseCourse.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { stripeWebhook } from "./controllers/purchaseCourse.controller.js"; // 👈 import directly
+import { stripeWebhook } from "./controllers/purchaseCourse.controller.js";
 
-const PORT = 8080;
-dotenv.config({});
+dotenv.config();
 connectDb();
 const app = express();
 
@@ -20,20 +19,16 @@ app.post(
   stripeWebhook
 );
 
-app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: `http://localhost:5173`,
-    credentials: true,
-  })
-);
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
 
 app.use("/api/v1/media", mediaRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/course", courseRouter);
 app.use("/api/v1/purchase", purchaseRouter);
 
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`server listening on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
