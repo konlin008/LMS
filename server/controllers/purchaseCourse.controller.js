@@ -91,7 +91,6 @@ export const stripeWebhook = async (req, res) => {
 
     try {
       const session = event.data.object;
-      console.log("Session ID:", session.id);
 
       await new Promise((res) => setTimeout(res, 1500));
 
@@ -104,7 +103,6 @@ export const stripeWebhook = async (req, res) => {
         return res.status(404).json({ message: "Purchase not found" });
       }
 
-      console.log("Purchase found:", purchase);
 
       if (session.amount_total) {
         purchase.amount = session.amount_total / 100;

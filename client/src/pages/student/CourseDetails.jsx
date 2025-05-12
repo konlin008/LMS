@@ -12,16 +12,20 @@ import { Separator } from "@/components/ui/separator";
 import { useGetCourseStatusQuery } from "@/features/apis/purchaseApi";
 import { BadgeInfo, Lock, PlayCircle } from "lucide-react";
 import React from "react";
-import { useParams } from "react-router-dom";
+import ReactPlayer from "react-player";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CourseDetails = () => {
     const params = useParams();
     const courseId = params.courseId;
-    const { data, isLoading, error, isSuccess } = useGetCourseStatusQuery({ courseId });
-    console.log(data);
+    const { data, isLoading, error } = useGetCourseStatusQuery({ courseId });
+    const navigate = useNavigate()
     if (isLoading) return (<h1>Loading...</h1>)
     if (error) return (<h1>Faild To Load Course Details</h1>)
     const { course, purchased } = data
+    const continueCourseHandler = () => {
+        if (purchased) navigate(`/course-progress/${courseId}`)
+    }
     return (
         <div className="mt-24 space-y-5">
             <div className="bg-[#2D2F31] text-white">
@@ -34,7 +38,7 @@ const CourseDetails = () => {
                     </p>
                     <div className="flex items-center gap-2 text-sm">
                         <BadgeInfo size={16} />
-                        <p>Last Updated {course?.updatedAt}</p>
+                        <p>Last Updated {course?.updatedAt.split('T')[0]}</p>
                     </div>
                     <p>students Enrolled: {course?.enrolledStudent.length}</p>
                 </div>
@@ -43,23 +47,20 @@ const CourseDetails = () => {
                 <div className="w-full lg:w-1/2 space-y-5">
                     <h1 className="font-bold text-xl md:text-2xl">Description</h1>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias non
-                        consequuntur voluptate quam, voluptatum dolorum soluta explicabo nam
-                        incidunt doloribus distinctio ex cumque maxime nihil. Odit ducimus
-                        ut labore commodi.
+                        {course?.description}
                     </p>
                     <Card>
                         <CardHeader>
                             <CardTitle>Course Content</CardTitle>
-                            <CardDescription>4 Lectures</CardDescription>
+                            <CardDescription></CardDescription>
                         </CardHeader>
                         <CardContent className={"space-y-3"}>
-                            {[1, 23, null].map((course, id) => (
+                            {course?.lecture.map((lecture, id) => (
                                 <div key={id} className="flex items-center text-sm gap-3">
                                     <span>
-                                        {course ? <PlayCircle size={14} /> : <Lock size={14} />}
+                                        {lecture ? <PlayCircle size={14} /> : <Lock size={14} />}
                                     </span>
-                                    <p>Lecture Title</p>
+                                    <p>{lecture?.title}</p>
                                 </div>
                             ))}
                         </CardContent>
@@ -68,17 +69,26 @@ const CourseDetails = () => {
                 <div className="w-full lg:w-1/3">
                     <Card>
                         <CardContent className={"p-4 flex flex-col"}>
-                            <div className="w-full aspect-video mb-4">coming soon</div>
-                            <h1>Lecture Title</h1>
+                            <div className="w-full aspect-video mb-4">
+                                <ReactPlayer
+                                    width={'100 %'}
+                                    height={'100%'}
+                                    url={course?.lecture[0].videoUrl}
+                                    controls={true}
+                                />
+                            </div>
+                            <h1 className="font-semibold">{course?.lecture[0].title}</h1>
                             <Separator className={"my-2"} />
 
-                            <h1 className="text-lg md:text-xl font-semibold">
-                                Course Price: {999}
-                            </h1>
+                            {purchased ? "" : (
+                                <h1 className="text-lg md:text-xl font-semibold">
+                                    Course Price: {999}
+                                </h1>
+                            )}
                         </CardContent>
                         <CardFooter className={'flex justify-center p-4'}>
                             {
-                                purchased ? (<Button className={'w-full'}>Continue Course</Button>) : <BuyCourseBtn courseId={courseId} />
+                                purchased ? (<Button onClick={continueCourseHandler} className={'w-full'}>Continue Course</Button>) : <BuyCourseBtn courseId={courseId} />
                             }
 
                         </CardFooter>
