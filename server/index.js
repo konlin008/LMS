@@ -5,6 +5,7 @@ import mediaRouter from "./routes/media.route.js";
 import userRouter from "./routes/user.route.js";
 import courseRouter from "./routes/course.route.js";
 import purchaseRouter from "./routes/purchaseCourse.route.js";
+import courseProgressRouter from "./routes/courseProgrss.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { stripeWebhook } from "./controllers/purchaseCourse.controller.js";
@@ -27,6 +28,7 @@ app.use("/api/v1/media", mediaRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/course", courseRouter);
 app.use("/api/v1/purchase", purchaseRouter);
+app.use("/api/v1/progress", courseProgressRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

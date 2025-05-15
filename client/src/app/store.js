@@ -3,6 +3,7 @@ import rootReducer from "./rootReducer";
 import authApi from "@/features/apis/authApi";
 import { courseApi } from "@/features/apis/courseApi";
 import { purchaseApi } from "@/features/apis/purchaseApi";
+import { courseProgressApi } from "@/features/apis/courseProgress.Api";
 
 export const appStore = configureStore({
   reducer: rootReducer,
@@ -10,7 +11,8 @@ export const appStore = configureStore({
     defaultMiddleWare().concat(
       authApi.middleware,
       courseApi.middleware,
-      purchaseApi.middleware
+      purchaseApi.middleware,
+      courseProgressApi.middleware
     ),
 });
 

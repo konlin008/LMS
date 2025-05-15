@@ -2,8 +2,8 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Badge } from "@/components/ui/badge";
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"; import { Link } from "react-router-dom";
+;
 
 const Course = ({ course }) => {
     return (
