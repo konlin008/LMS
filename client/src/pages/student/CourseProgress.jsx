@@ -1,18 +1,30 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { useGetCourseProgressQuery, useLectureProgressMutation } from "@/features/apis/courseProgress.Api";
+import { useGetCourseProgressQuery, useLectureProgressMutation, useMarkAsCompleteMutation, useMarkAsIncompleteMutation } from "@/features/apis/courseProgress.Api";
 import { CheckCircle2, CirclePlay } from "lucide-react";
-import React, { useState } from "react";
-import ReactPlayer from "react-player";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const CourseProgress = () => {
   const [currentLecture, setCurrentlecture] = useState(null)
   const params = useParams();
   const courseId = params.courseId;
   const { data, isError, isLoading, refetch } = useGetCourseProgressQuery({ courseId });
-  const [lectureProgress, { data: lectureProgressData }] = useLectureProgressMutation();
+  const [lectureProgress] = useLectureProgressMutation();
+  const [markAsComplete, { isSuccess: completedIsSuccess }] = useMarkAsCompleteMutation();
+  const [markAsIncomplete, { isSuccess: incompletedIsSuccess, }] = useMarkAsIncompleteMutation();
+  useEffect(() => {
+    if (completedIsSuccess) {
+      refetch();
+      toast.success('Course completed. Great job!')
+    }
+    if (incompletedIsSuccess) {
+      refetch();
+      toast.warning('Course Marked As Incompleted')
+    }
+  }, [completedIsSuccess, incompletedIsSuccess])
   if (isLoading) {
     return (<p>Loading...</p>)
   }
@@ -33,11 +45,24 @@ const CourseProgress = () => {
     await lectureProgress({ courseId, lectureId })
     refetch();
   }
+  const handelCompleteCourse = async () => {
+    await markAsComplete({ courseId })
+    refetch();
+  }
+  const handelIncompleteCourse = async () => {
+    await markAsIncomplete({ courseId })
+    refetch();
+  }
+
   return (
     <div className="max-w-7xl mx-auto p-4 mt-24">
       <div className=" flex justify-between mb-4">
         <h1 className="text-2xl font-bold"> {courseDetails?.courseTitle}</h1>
-        <Button>Completed</Button>
+        <Button onClick={completed ? handelIncompleteCourse : handelCompleteCourse}>
+          {
+            completed ? (<div className="flex items-center justify-between">  <span>Marked as Complete</span> </div>) : (<div className="  flex items-center justify-between">  <span>Marked as   Incomplete</span> </div>)
+          }
+        </Button>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-3/5 h-fit rounded-lg shadow-lg p-4">
@@ -78,7 +103,7 @@ const CourseProgress = () => {
                     </div>
                   </div>
                   {
-                    isLectureCompleted(lecture._id) ? (<Badge variant={'outline'} className={'bg-green-200 text-green-600'} > Mark Completed</Badge>) : ''
+                    isLectureCompleted(lecture._id) ? (<Badge variant={'outline'} className={'bg-green-200 text-green-600'} > Completed</Badge>) : ''
                   }
 
                 </CardContent>

@@ -22,11 +22,13 @@ export const courseProgressApi = createApi({
     markAsComplete: builder.mutation({
       query: ({ courseId }) => ({
         url: `/${courseId}/complete`,
+        method: "POST",
       }),
     }),
     markAsIncomplete: builder.mutation({
       query: ({ courseId }) => ({
         url: `/${courseId}/incomplete`,
+        method: "POST",
       }),
     }),
   }),

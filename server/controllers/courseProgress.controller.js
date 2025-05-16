@@ -4,7 +4,7 @@ import { CourseProgress } from "../model/courseProgress.model.js";
 export const getCourseProgress = async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { userId } = req.id;
+    const userId = req.id;
 
     let courseProgress = await CourseProgress.findOne({
       courseId,
