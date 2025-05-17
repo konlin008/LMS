@@ -192,7 +192,7 @@ const CourseTab = () => {
                                         <SelectItem value="game-dev">Game Development</SelectItem>
                                         <SelectItem value="blockchain">Blockchain</SelectItem>
                                         <SelectItem value="embedded">Embedded Systems</SelectItem>
-                                        <SelectItem value="qa">Quality Assurance</SelectItem>
+                                        <SelectItem value="quality">Quality Assurance</SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
