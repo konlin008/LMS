@@ -60,7 +60,7 @@ const CourseProgress = () => {
         <h1 className="text-2xl font-bold"> {courseDetails?.courseTitle}</h1>
         <Button onClick={completed ? handelIncompleteCourse : handelCompleteCourse}>
           {
-            completed ? (<div className="flex items-center justify-between">  <span>Marked as Complete</span> </div>) : (<div className="  flex items-center justify-between">  <span>Marked as   Incomplete</span> </div>)
+            completed ? (<div className="flex items-center justify-between">  <span>Marked as Incomplete</span> </div>) : (<div className="  flex items-center justify-between">  <span>Marked as Complete</span> </div>)
           }
         </Button>
       </div>

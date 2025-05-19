@@ -30,6 +30,22 @@ export const courseApi = createApi({
         method: "GET",
       }),
     }),
+    getSearchCourse: builder.query({
+      query: ({ query, category, sortByPrice }) => {
+        let queryString = `/searchCourse?query=${encodeURIComponent(query)}`;
+        if (category && category.length) {
+          const categoriesString = category.map(encodeURIComponent).join(",");
+          queryString += `&category=${categoriesString}`;
+        }
+        if (sortByPrice) {
+          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`;
+        }
+        return {
+          url: queryString,
+          method: "GET",
+        };
+      },
+    }),
     editCourse: builder.mutation({
       query: ({ courseId, formData }) => ({
         url: `updateCourse/${courseId}`,
@@ -97,6 +113,7 @@ export const courseApi = createApi({
 export const {
   useCreateCourseMutation,
   useGetCreatorCourseQuery,
+  useGetSearchCourseQuery,
   useGetPublishedCoursesQuery,
   useEditCourseMutation,
   useGetCourseDetailsQuery,
