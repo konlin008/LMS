@@ -86,9 +86,11 @@ const NavBar = () => {
                 {user.role === "instructor" ? (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Link to="/admin">Dashboard</Link>
-                    </DropdownMenuItem>
+                    <Link to="/admin">
+                      <DropdownMenuItem>
+                        Dashboard
+                      </DropdownMenuItem>
+                    </Link>
                   </>
                 ) : (
                   ""

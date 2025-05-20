@@ -31,17 +31,21 @@ export const courseApi = createApi({
       }),
     }),
     getSearchCourse: builder.query({
-      query: ({ query, category, sortByPrice }) => {
-        let queryString = `/searchCourse?query=${encodeURIComponent(query)}`;
-        if (category && category.length) {
-          const categoriesString = category.map(encodeURIComponent).join(",");
-          queryString += `&category=${categoriesString}`;
+      query: ({ query, categories, sortByPrice }) => {
+        const params = new URLSearchParams();
+
+        if (query) params.append("query", query);
+
+        if (categories && categories.length) {
+          categories.forEach((cat) => {
+            params.append("categories", cat);
+          });
         }
-        if (sortByPrice) {
-          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`;
-        }
+
+        if (sortByPrice) params.append("sortByPrice", sortByPrice);
+
         return {
-          url: queryString,
+          url: `/searchCourse?${params.toString()}`,
           method: "GET",
         };
       },

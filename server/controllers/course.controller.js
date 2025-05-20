@@ -55,30 +55,40 @@ export const getCreatorCourses = async (req, res) => {
 };
 export const searchedCourse = async (req, res) => {
   try {
-    const { query = "", categories = [], sortByPrice = "" } = req.query;
-    const searchCriteria = {
-      isPublished: true,
-      $or: [
-        { courseTitle: { $regex: query, $options: "i" } },
-        { courseSubTitle: { $regex: query, $options: "i" } },
-        { category: { $regex: query, $options: "i" } },
-      ],
-    };
-    if (categories.length > 0) {
-      searchCriteria.category = { $in: categories };
+    let { query = "", categories = [], sortByPrice = "" } = req.query;
+    if (typeof categories === "string") {
+      categories = [categories];
     }
+
+    const baseCriteria = { isPublished: true };
+
+    const orConditions = [
+      { courseTitle: { $regex: query, $options: "i" } },
+      { courseSubTitle: { $regex: query, $options: "i" } },
+      { category: { $regex: query, $options: "i" } },
+    ];
+
+    const andConditions = [baseCriteria, { $or: orConditions }];
+
+    if (categories.length > 0) {
+      andConditions.push({
+        category: {
+          $in: categories.map((cat) => new RegExp(cat, "i")),
+        },
+      });
+    }
+
+    const searchCriteria = { $and: andConditions };
+
     const sortOptions = {};
     if (sortByPrice === "low") {
       sortOptions.coursePrice = 1;
-    }
-    if (sortByPrice === "high") {
+    } else if (sortByPrice === "high") {
       sortOptions.coursePrice = -1;
     }
-    let courses = await Course.find(searchCriteria)
-      .populate({
-        path: "creator",
-        select: "name photoUrl",
-      })
+
+    const courses = await Course.find(searchCriteria)
+      .populate({ path: "creator", select: "name photoUrl" })
       .sort(sortOptions);
 
     return res.status(200).json({
@@ -88,7 +98,9 @@ export const searchedCourse = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      msg: "Internal Server Error",
+      success: false,
+      message: "Error searching courses",
+      error: error.message,
     });
   }
 };

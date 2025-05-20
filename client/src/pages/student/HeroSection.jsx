@@ -9,7 +9,7 @@ const HeroSection = () => {
     const searchHandler = (e) => {
         e.preventDefault();
         if (serachQuery.trim() !== '') {
-            navigate(`course/search?query=${serachQuery} `)
+            navigate(`course/search?query=${serachQuery}`)
         }
         setSearchQuery('')
     }
@@ -33,7 +33,7 @@ const HeroSection = () => {
                     />
                     <Button type={'submit'} className='bg-[#97BC62] dark:bg-[#97BC62] px-6 py-3 rounded-r-full hover:bg-[#2C5F2D] dark:hover:bg-[#2C5F2D]'>Search</Button>
                 </form>
-                <Button className='bg-white dark:bg-gray-800 text-[#2C5F2D] rounded-full hover:bg-gray-200'>
+                <Button onClick={() => { navigate(`course/search?query`) }} className='bg-white dark:bg-gray-800 text-[#2C5F2D] rounded-full hover:bg-gray-200'>
                     Explore Courses
                 </Button>
             </div>

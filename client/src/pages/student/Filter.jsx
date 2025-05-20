@@ -17,6 +17,7 @@ const Filter = ({ handelFilterChange }) => {
     setSortByPrice(SelectedValue)
     handelFilterChange(selectedCategories, SelectedValue)
   }
+
   const categories = [
     { id: "frontend", label: "Frontend" },
     { id: "backend", label: "Backend" },
@@ -55,7 +56,7 @@ const Filter = ({ handelFilterChange }) => {
           categories.map((category, index) => {
             return (
               <div key={index} className='flex items-center space-x-2 my-2'>
-                <Checkbox id={category.id} onChange={() => handelCategoryChange(category.id)} />
+                <Checkbox id={category.id} onCheckedChange={() => handelCategoryChange(category.id)} />
                 <Label className={'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'}>{category.label}</Label>
               </div>
             )
