@@ -69,7 +69,7 @@ const Profile = () => {
     console.log(user);
 
     return (
-        <div className=" max-w-7xl mx-auto my-24  px-4 md:px-0">
+        <div className=" max-w-7xl mx-auto my-10  px-4 md:px-0">
             <h1 className="font-bold text-2xl text-center md:text-left">
                 MY PROFILE
             </h1>

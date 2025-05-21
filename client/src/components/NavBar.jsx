@@ -47,7 +47,7 @@ const NavBar = () => {
     }
   }, [data, isSuccess, isError, error]);
   return (
-    <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 p-2.5 ">
+    <div className="h-16 dark:bg-[#020618] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 p-2.5 ">
       <div
         id="xyz"
         className="max-w-7xl mx-auto hidden md:flex items-center justify-between "
@@ -88,7 +88,7 @@ const NavBar = () => {
                 {user.role === "instructor" ? (
                   <>
                     <DropdownMenuSeparator />
-                    <Link to="/admin">
+                    <Link to="/admin/dashboard">
                       <DropdownMenuItem>Dashboard</DropdownMenuItem>
                     </Link>
                   </>
@@ -150,7 +150,7 @@ const MobileNavBar = ({ user }) => {
         <SheetTrigger asChild>
           <Button
             size="icon"
-            className="rounded-full bg-gray-200 hover:bg-gray-200 "
+            className="rounded-full hover:bg-gray-200 "
             variant="outline"
           >
             <Menu />
@@ -158,24 +158,30 @@ const MobileNavBar = ({ user }) => {
         </SheetTrigger>
         <SheetContent className="p-3 flex flex-col ">
           <SheetHeader className="flex flex-row items-center justify-between mt-10 p-0">
-            <SheetTitle>SKILLORA</SheetTitle>
+            <Link to={"/"}>
+              <SheetTitle>SKILLORA</SheetTitle>
+            </Link>
             <DarkMode />
           </SheetHeader>
           <Separator className="mr-2" />
           <nav className="flex flex-col space-y-4">
-            <span>
-              <Link to="myLearning">My Learning</Link>
-            </span>
-            <span>
-              <Link to="profile">Edit Profile</Link>
-            </span>
+            <Link to="myLearning">
+              <span>
+                My Learning
+              </span>
+            </Link>
+            <Link to="profile">
+              <span>
+                Edit Profile
+              </span>
+            </Link>
             <span onClick={logOutHandler}>Logout</span>
           </nav>
           {user?.role === "instructor" ? (
             <>
               <SheetFooter>
                 <SheetClose asChild>
-                  <Button onClick={() => navigate("/admin")}>Dashboard</Button>
+                  <Button onClick={() => navigate("/admin/dashboard")}>Dashboard</Button>
                 </SheetClose>
               </SheetFooter>
             </>

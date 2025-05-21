@@ -5,9 +5,8 @@ import { useLoadUserProfileQuery } from '@/features/apis/authApi';
 const MyLearning = () => {
     const { data, isLoading } = useLoadUserProfileQuery();
     const myCourses = data?.user.enrolledCourses
-    console.log(myCourses);
     return (
-        <div className='max-w-7xl mx-auto my-24 px-4 md:px-0 '>
+        <div className='max-w-7xl mx-auto my-10  px-4 md:px-0 '>
             <h1 className='font-bold text-2xl'> MY LEARNING</h1>
             <div className='my-5'>
                 {isLoading ? (
@@ -16,7 +15,7 @@ const MyLearning = () => {
                     </>
                 ) : (
                     <>
-                        {myCourses.length === 0 ? (<p>
+                        {myCourses?.length === 0 ? (<p>
                             You Are Not Enrolled In Any Courses
                         </p>) : (
                             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>

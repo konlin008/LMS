@@ -33,7 +33,7 @@ const HeroSection = () => {
                     />
                     <Button type={'submit'} className='bg-[#97BC62] dark:bg-[#97BC62] px-6 py-3 rounded-r-full hover:bg-[#2C5F2D] dark:hover:bg-[#2C5F2D]'>Search</Button>
                 </form>
-                <Button onClick={() => { navigate(`course/search?query`) }} className='bg-white dark:bg-gray-800 text-[#2C5F2D] rounded-full hover:bg-gray-200'>
+                <Button onClick={() => { navigate(`course/search?query`) }} className='bg-white dark:bg-gray-800 text-[#97BC62] rounded-full hover:bg-gray-200'>
                     Explore Courses
                 </Button>
             </div>
