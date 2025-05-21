@@ -103,7 +103,6 @@ export const stripeWebhook = async (req, res) => {
         return res.status(404).json({ message: "Purchase not found" });
       }
 
-
       if (session.amount_total) {
         purchase.amount = session.amount_total / 100;
       }
@@ -122,10 +121,11 @@ export const stripeWebhook = async (req, res) => {
       }
 
       await purchase.save();
-
+      console.log("COURSE ID:", purchase.courseId?._id || purchase.courseId);
+      const courseId = purchase.courseId;
       await User.findByIdAndUpdate(
         purchase.userId,
-        { $addToSet: { enrolledCourses: purchase.courseId._id } },
+        { $addToSet: { enrolledCourses: courseId } },
         { new: true }
       );
 

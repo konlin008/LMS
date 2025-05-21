@@ -24,16 +24,20 @@ import { toast } from "sonner";
 const Profile = () => {
     const { data, refetch, isLoading } = useLoadUserProfileQuery();
 
-    const [name, setName] = useState('');
-    const [profilePhoto, setProfilePhoto] = useState('');
 
+    const [name, setName] = useState("");
+    const [profilePhoto, setProfilePhoto] = useState("");
 
-    const [updateUserProfiler, { data: updatedData, isLoading: updatedDataIsLoading, isError, error, isSuccess },] = useUpdateUserProfileMutation();
-
-
-
-
-
+    const [
+        updateUserProfiler,
+        {
+            data: updatedData,
+            isLoading: updatedDataIsLoading,
+            isError,
+            error,
+            isSuccess,
+        },
+    ] = useUpdateUserProfileMutation();
 
     function onChangeHandeler(e) {
         const file = e.target.files?.[0];
@@ -42,32 +46,27 @@ const Profile = () => {
         }
     }
 
-
-
-
     async function upadteUserHandler() {
-        const formData = new FormData()
-        formData.append('name', name)
-        formData.append('profilePhoto', profilePhoto)
-        await updateUserProfiler(formData)
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("profilePhoto", profilePhoto);
+        await updateUserProfiler(formData);
     }
     useEffect(() => {
         if (isSuccess) {
-            refetch()
-            toast.success(updatedData.msg || 'Profile Updated ')
+            refetch();
+            toast.success(updatedData.msg || "Profile Updated ");
         }
         if (isError) {
-            toast.error(error.msg || 'Faild to Upload')
+            toast.error(error.msg || "Faild to Upload");
         }
-
-    }, [updatedData, error, isSuccess, isError, refetch])
+    }, [updatedData, error, isSuccess, isError, refetch]);
 
     if (isLoading) {
         return <h1>Profile is Loading</h1>;
     }
     const user = data && data.user;
-
-
+    console.log(user);
 
     return (
         <div className=" max-w-7xl mx-auto my-24  px-4 md:px-0">
@@ -131,7 +130,7 @@ const Profile = () => {
                                         <Input
                                             id="name"
                                             value={name}
-                                            onChange={e => setName(e.target.value)}
+                                            onChange={(e) => setName(e.target.value)}
                                             placeholder="Pedro Duarte"
                                             className="col-span-3"
                                         />
@@ -150,7 +149,10 @@ const Profile = () => {
                                     </div>
                                 </div>
                                 <DialogFooter>
-                                    <Button disabled={updatedDataIsLoading} onClick={upadteUserHandler}>
+                                    <Button
+                                        disabled={updatedDataIsLoading}
+                                        onClick={upadteUserHandler}
+                                    >
                                         {updatedDataIsLoading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin " />

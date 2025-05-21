@@ -23,6 +23,7 @@ const CourseDetails = () => {
     if (isLoading) return (<h1>Loading...</h1>)
     if (error) return (<h1>Faild To Load Course Details</h1>)
     const { course, purchased } = data
+    console.log(course);
     const continueCourseHandler = () => {
         if (purchased) navigate(`/course-progress/${courseId}`)
     }
@@ -82,7 +83,7 @@ const CourseDetails = () => {
 
                             {purchased ? "" : (
                                 <h1 className="text-lg md:text-xl font-semibold">
-                                    Course Price: {999}
+                                    Course Price: {course?.coursePrice}
                                 </h1>
                             )}
                         </CardContent>

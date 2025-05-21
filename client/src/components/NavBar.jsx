@@ -54,8 +54,10 @@ const NavBar = () => {
       >
         <div className="flex items-center gap-5">
           <School size={30} />
-          <Link to={'/'}>
-            <h1 className=" hidden md:block font-extrabold text-2xl">SKILLORA</h1>
+          <Link to={"/"}>
+            <h1 className=" hidden md:block font-extrabold text-2xl">
+              SKILLORA
+            </h1>
           </Link>
         </div>
         <div className="flex gap-4">
@@ -73,12 +75,12 @@ const NavBar = () => {
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link to="myLearning">My Learning</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="profile">Edit Profile</Link>
-                </DropdownMenuItem>
+                <Link to="myLearning">
+                  <DropdownMenuItem>My Learning</DropdownMenuItem>
+                </Link>
+                <Link to="profile">
+                  <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem onClick={logOutHandler}>
                   Log out
                 </DropdownMenuItem>
@@ -87,9 +89,7 @@ const NavBar = () => {
                   <>
                     <DropdownMenuSeparator />
                     <Link to="/admin">
-                      <DropdownMenuItem>
-                        Dashboard
-                      </DropdownMenuItem>
+                      <DropdownMenuItem>Dashboard</DropdownMenuItem>
                     </Link>
                   </>
                 ) : (
@@ -179,8 +179,9 @@ const MobileNavBar = ({ user }) => {
                 </SheetClose>
               </SheetFooter>
             </>
-          ) : ''}
-
+          ) : (
+            ""
+          )}
         </SheetContent>
       </Sheet>
     </>
