@@ -51,8 +51,7 @@ const CreateLecture = () => {
           Lets add Course & add some basic details for new course
         </h1>
         <p className="text-sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus,
-          aliquam.
+          Let’s add a new lecture. Enter a title and details to structure your course content effectively.
         </p>
       </div>
       <div className="flex flex-col space-y-10">
@@ -60,7 +59,7 @@ const CreateLecture = () => {
           <Label>Title</Label>
           <Input
             type={"text"}
-            placeholder={"Your Course Title"}
+            placeholder={"Your Lecture Title"}
             className={"max-w-2xl"}
             value={lectureTitle}
             onChange={(e) => setLectureTitle(e.target.value)}

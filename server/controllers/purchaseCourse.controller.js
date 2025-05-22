@@ -106,9 +106,8 @@ export const stripeWebhook = async (req, res) => {
       if (session.amount_total) {
         purchase.amount = session.amount_total / 100;
       }
-
       purchase.status = "completed";
-
+      await purchase.save();
       if (
         purchase.courseId &&
         Array.isArray(purchase.courseId.lectures) &&
@@ -160,10 +159,13 @@ export const getPurchasedCourseStatus = async (req, res) => {
       });
     }
     const purchased = await PurchaseCourse.findOne({ userId, courseId });
-
+    let status = false;
+    if (purchased && purchased.status === "completed") {
+      status = true;
+    }
     return res.status(200).json({
       course,
-      purchased: !!purchased,
+      purchased: status,
     });
   } catch (error) {
     console.log(error);

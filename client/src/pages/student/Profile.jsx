@@ -86,7 +86,7 @@ const Profile = () => {
                     <div>
                         <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-xl">
                             Name:{" "}
-                            <span className="text-lg text-gray-700 dark:text-gray-300 ml-2">
+                            <span className="text-sm text-gray-8    00 dark:text-gray-300 ml-2">
                                 {user.name}
                             </span>
                         </h2>
@@ -94,7 +94,7 @@ const Profile = () => {
                     <div>
                         <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-xl">
                             Email:{" "}
-                            <span className="text-lg text-gray-700 dark:text-gray-300 ml-2">
+                            <span className="text-sm text-gray-800 dark:text-gray-300 ml-2">
                                 {user.email}
                             </span>
                         </h2>
@@ -102,7 +102,7 @@ const Profile = () => {
                     <div>
                         <h2 className="font-semibold text-gray-900 dark:text-gray-200 text-xl">
                             Role:{" "}
-                            <span className="text-lg text-gray-700 dark:text-gray-300 ml-2">
+                            <span className="text-sm text-gray-800 dark:text-gray-300 ml-2">
                                 {user.role.toUpperCase()}
                             </span>
                         </h2>

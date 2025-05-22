@@ -23,7 +23,7 @@ const CourseDetails = () => {
     if (isLoading) return (<h1>Loading...</h1>)
     if (error) return (<h1>Faild To Load Course Details</h1>)
     const { course, purchased } = data
-    console.log(course);
+    console.log(data);
     const continueCourseHandler = () => {
         if (purchased) navigate(`/course-progress/${courseId}`)
     }

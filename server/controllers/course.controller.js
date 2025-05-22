@@ -356,7 +356,7 @@ export const toggelPublishCourse = async (req, res) => {
   try {
     const { courseId } = req.params;
     const { publish } = req.query;
-    console.log(courseId);
+
     const course = await Course.findById(courseId);
     if (!courseId) {
       return res.status(404).json({
