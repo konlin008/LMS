@@ -1,56 +1,67 @@
-# 📚 Learning Management System (LMS)
+# LMS – Learning Management System
 
-A full-stack Learning Management System designed to manage users, courses, and progress tracking — built with the MERN stack.
+LMS (Learning Management System) is a full-stack web application that allows administrators to manage courses, instructors to upload content, and students to enroll and track their learning. It is built using a **React** frontend and a **Node.js, Express, and MongoDB** backend.
 
----
+[Live Demo](https://lms-live.vercel.app/) – Try out the LMS platform live!
 
-## 🚀 Features
+## Features
 
-- 🔐 **User Authentication & Role Management**  
-  Secure login system with roles like Admin, Instructor, and Student.
+### Frontend
+- User authentication (Login/Register)
+- Role-based access: Admin, Instructor, Student
+- Course creation, editing, and deletion (Admin/Instructor)
+- Course enrollment and progress tracking (Student)
+- Real-time feedback using **React Toastify**
+- Dashboard views for different user roles
+- Responsive UI with **Tailwind CSS**
 
-- 📚 **Course Management**  
-  Create, update, and manage courses. Students can enroll in and access course materials.
+### Backend
+- Secure authentication using **bcrypt** and **JWT**
+- Role-based authorization for protected routes
+- RESTful API endpoints for managing users and courses
+- Input validation with **Zod**
+- MongoDB models with **Mongoose**
+- Environment-based configuration with **dotenv**
 
-- 📝 **Assignments & Grading**  
-  Upload assignments and allow instructors to review and grade submissions.
+## Tech Stack
 
-- 📊 **Progress Tracking**  
-  Monitor course progress and view detailed reports.
+### Frontend
+- React
+- React Router DOM
+- Redux & RTK Query
+- Axios
+- Tailwind CSS
+- React Toastify
+- Vite
 
-- 💻 **Responsive UI**  
-  Seamlessly works across desktop, tablet, and mobile devices.
+### Backend
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- bcrypt
+- JWT
+- Zod
+- dotenv
+- CORS
 
----
-
-## Getting Started
+## Installation & Setup
 
 ### Prerequisites
+- Node.js and npm installed
 
-- Node.js (v16+)
-- npm or yarn
-- MongoDB (local or cloud instance)
-
-### 1. Clone the Repository
-
-````bash
+### Clone the Repository
+```bash
 git clone https://github.com/konlin008/LMS.git
-cd lms
-
-To run the backend:
-
-```bash
-cd server
-npm install
-npm run dev
-````
-
-#### Frontend
-
-To run the frontend:
-
-```bash
-cd client
-npm install
-npm run dev
+cd LMS
 ```
+To run the backend:
+```bash
+cd backend
+npm install
+npm run dev  # or use nodemon
+```
+To run the frontend:
+```bash
+cd frontend
+npm install
+npm run dev
