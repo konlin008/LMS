@@ -7,6 +7,7 @@ LMS (Learning Management System) is a full-stack web application that allows adm
 ## Features
 
 ### Frontend
+
 - User authentication (Login/Register)
 - Role-based access: Admin, Instructor, Student
 - Course creation, editing, and deletion (Admin/Instructor)
@@ -16,6 +17,7 @@ LMS (Learning Management System) is a full-stack web application that allows adm
 - Responsive UI with **Tailwind CSS**
 
 ### Backend
+
 - Secure authentication using **bcrypt** and **JWT**
 - Role-based authorization for protected routes
 - RESTful API endpoints for managing users and courses
@@ -26,6 +28,7 @@ LMS (Learning Management System) is a full-stack web application that allows adm
 ## Tech Stack
 
 ### Frontend
+
 - React
 - React Router DOM
 - Redux & RTK Query
@@ -35,6 +38,7 @@ LMS (Learning Management System) is a full-stack web application that allows adm
 - Vite
 
 ### Backend
+
 - Node.js
 - Express.js
 - MongoDB (Mongoose)
@@ -47,21 +51,28 @@ LMS (Learning Management System) is a full-stack web application that allows adm
 ## Installation & Setup
 
 ### Prerequisites
+
 - Node.js and npm installed
 
 ### Clone the Repository
+
 ```bash
 git clone https://github.com/konlin008/LMS.git
 cd LMS
 ```
+
 To run the backend:
+
 ```bash
 cd backend
 npm install
 npm run dev  # or use nodemon
 ```
+
 To run the frontend:
+
 ```bash
 cd frontend
 npm install
 npm run dev
+```

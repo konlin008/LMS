@@ -6,7 +6,6 @@ import React from "react"; import { Link } from "react-router-dom";
 ;
 
 const Course = ({ course }) => {
-    console.log(course);
     return (
         <Link to={`/course-details/${course?._id}`}>
             <Card className="overflow-hidden rounded-lg dark:bg-gray-800 bg-white shadow-lg hover:shadow-2xl transform hover:sc-105 transition-all duration-300 pt-0 ">
