@@ -9,8 +9,7 @@ A full-stack Learning Management System designed to manage users, courses, and p
 - 🔐 **User Authentication & Role Management**  
   Secure login system with roles like Admin, Instructor, and Student.
 
-- 📚 **Course Management**  
-  Create, update, and manage courses. Students can enroll in and access course materials.
+
 
 - 📝 **Assignments & Grading**  
   Upload assignments and allow instructors to review and grade submissions.
