@@ -1,29 +1,29 @@
 import { createBrowserRouter } from "react-router-dom";
 import "./App.css";
-import Login from "./pages/Login";
-import HeroSection from "./pages/student/heroSection";
-import MainLayout from "./layout/MainLayout";
+import Login from "./pages/Login.jsx";
+import HeroSection from "./pages/student/HeroSection.jsx";
+import MainLayout from "./layout/MainLayout.jsx";
 import { RouterProvider } from "react-router";
-import { Courses } from "./pages/student/Courses";
-import MyLearning from "./pages/student/MyLearning";
-import Profile from "./pages/student/Profile";
-import SideBar from "./pages/admin/SideBar";
-import Dashboard from "./pages/admin/DashBoard";
-import CoursesTable from "./pages/admin/course/CoursesTable";
-import AddCourse from "./pages/admin/course/AddCourse";
-import EditCourse from "./pages/admin/course/EditCourse";
-import CreateLecture from "./pages/admin/lecture/CreateLecture";
-import EditLecture from "./pages/admin/lecture/EditLecture";
-import CourseDetails from "./pages/student/CourseDetails";
-import CourseProgress from "./pages/student/CourseProgress";
-import SearchPage from "./pages/student/SearchPage";
+import { Courses } from "./pages/student/Courses.jsx";
+import MyLearning from "./pages/student/MyLearning.jsx";
+import Profile from "./pages/student/Profile.jsx";
+import SideBar from "./pages/admin/SideBar.jsx";
+import Dashboard from "./pages/admin/DashBoard.jsx";
+import CoursesTable from "./pages/admin/course/CoursesTable.jsx";
+import AddCourse from "./pages/admin/course/AddCourse.jsx";
+import EditCourse from "./pages/admin/course/EditCourse.jsx";
+import CreateLecture from "./pages/admin/lecture/CreateLecture.jsx";
+import EditLecture from "./pages/admin/lecture/EditLecture.jsx";
+import CourseDetails from "./pages/student/CourseDetails.jsx";
+import CourseProgress from "./pages/student/CourseProgress.jsx";
+import SearchPage from "./pages/student/SearchPage.jsx";
 import {
   AdminRoute,
   AuthenticatedUser,
   ProtectedRoute,
-} from "./components/ProtectedRoute";
-import PurchasedCourseProtectedRoute from "./components/purchaseCourseProtected";
-import { ThemeProvider } from "./components/ThemeProvider";
+} from "./components/ProtectedRoute.jsx";
+import PurchasedCourseProtectedRoute from "./components/purchaseCourseProtected.jsx";
+import { ThemeProvider } from "./components/ThemeProvider.jsx";
 function App() {
   const appRouter = createBrowserRouter([
     {
