@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -21,12 +22,12 @@ const CourseProgress = () => {
       toast.success('Course completed. Great job!')
     }
     if (incompletedIsSuccess) {
-      refetch();
       toast.warning('Course Marked As Incompleted')
+      refetch();
     }
   }, [completedIsSuccess, incompletedIsSuccess])
   if (isLoading) {
-    return (<p>Loading...</p>)
+    return (<LoadingSpinner />)
   }
   if (isError) {
     return <p>Some thing Went Wrong</p>

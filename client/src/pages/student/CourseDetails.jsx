@@ -1,4 +1,5 @@
 import BuyCourseBtn from "@/components/BuyCourseBtn";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -20,7 +21,7 @@ const CourseDetails = () => {
     const courseId = params.courseId;
     const { data, isLoading, error } = useGetCourseStatusQuery({ courseId });
     const navigate = useNavigate()
-    if (isLoading) return (<h1>Loading...</h1>)
+    if (isLoading) return (<LoadingSpinner />)
     if (error) return (<h1>Faild To Load Course Details</h1>)
     const { course, purchased } = data
     console.log(data);

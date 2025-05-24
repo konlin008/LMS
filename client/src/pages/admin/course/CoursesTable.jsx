@@ -15,14 +15,13 @@ import { useNavigate } from "react-router-dom";
 import { useGetCreatorCourseQuery } from "@/features/apis/courseApi";
 import { Badge } from "@/components/ui/badge";
 import { Edit } from "lucide-react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const CoursesTable = () => {
   const navigate = useNavigate();
   const { data, isLoading } = useGetCreatorCourseQuery()
-
-
   if (isLoading) {
-    return <h1>Loading...</h1>
+    return <LoadingSpinner />
   };
   const creatorCourses = data?.courses
 

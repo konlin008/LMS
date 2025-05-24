@@ -42,7 +42,7 @@ const Dashboard = () => {
                         Course Prices
                     </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent >
                     <ResponsiveContainer width="100%" height={250}>
                         <LineChart data={courseData}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
@@ -58,9 +58,9 @@ const Dashboard = () => {
                             <Line
                                 type="monotone"
                                 dataKey="price"
-                                stroke="#4a90e2" // Changed color to a different shade of blue
+                                stroke="#00C951"
                                 strokeWidth={3}
-                                dot={{ stroke: "#4a90e2", strokeWidth: 2 }} // Same color for the dot
+                                dot={{ stroke: "#00C951", strokeWidth: 2 }}
                             />
                         </LineChart>
                     </ResponsiveContainer>
