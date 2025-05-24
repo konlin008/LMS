@@ -2,7 +2,7 @@
 
 LMS (Learning Management System) is a full-stack web application that allows administrators to manage courses, instructors to upload content, and students to enroll and track their learning. It is built using a **React** frontend and a **Node.js, Express, and MongoDB** backend.
 
-[Live Demo]([https://lms-live.vercel.app/)](https://lms-buwm.vercel.app/) – Try out the LMS platform live!
+[Live Demo]([https://lms-live.vercel.app/]) – Try out the LMS platform live!
 
 ## Features
 
